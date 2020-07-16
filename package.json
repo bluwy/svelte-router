@@ -1,0 +1,46 @@
+{
+  "name": "@bjornlu/svelte-router",
+  "description": "Simple vue-like router",
+  "version": "1.0.0",
+  "main": "dist/svelte-router.umd.js",
+  "module": "dist/index.js",
+  "svelte": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "author": {
+    "name": "Bjorn Lu",
+    "url": "https://bjornlu.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "svelte",
+    "router"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "yarn build:tsc && yarn build:copy && yarn build:bundle",
+    "build:tsc": "tsc",
+    "build:copy": "node ./scripts/copy-svelte.js",
+    "build:bundle": "rollup -c",
+    "format": "prettier --write \"**/*.{ts,md}\"",
+    "prepublishOnly": "yarn clean && yarn build"
+  },
+  "peerDependencies": {
+    "svelte": "^3.24.0"
+  },
+  "dependencies": {
+    "regexparam": "^1.3.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^8.4.0",
+    "prettier": "^2.0.5",
+    "prettier-plugin-svelte": "^1.1.0",
+    "rollup": "^2.21.0",
+    "rollup-plugin-svelte": "^5.2.3",
+    "svelte": "^3.24.0",
+    "typescript": "^3.9.6"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": true,
+    "target": "ES2015",
+    "moduleResolution": "node",
+    "types": ["svelte"],
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules"]
+}
