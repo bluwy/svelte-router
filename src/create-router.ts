@@ -40,12 +40,12 @@ export type RedirectOption = string | ((to: Route) => string)
 
 export interface RouterOptions {
   /** The base path of your application */
-  base: string
+  base?: string
   routes: RouteRecord[]
 }
 
 export function createRouter(options: RouterOptions) {
-  const basePath = formatPath(options.base)
+  const basePath = formatPath(options.base ?? '/')
   const matchers = routesToMatchers(options.routes)
   const route = writable({} as Route)
 
