@@ -6,7 +6,8 @@ import {
   getPathHash,
   getPathParams,
   getPathQuery,
-  joinPaths
+  joinPaths,
+  removeHashAndQuery
 } from './util'
 
 export interface RouteMatcher {
@@ -122,8 +123,11 @@ export function findMatcher(
 
 /** Converts a route matcher to route object based on path given */
 function matcherToRoute(path: string, matcher: RouteMatcher): Route {
+  const routePath = removeHashAndQuery(path)
+
   return {
-    path: matcher.path,
+    path: routePath,
+    fullPath: path,
     matched: matcher.matched,
     params: getPathParams(path, matcher.rpResult),
     hash: getPathHash(path),

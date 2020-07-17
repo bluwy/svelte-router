@@ -6,8 +6,7 @@ import { RegexparamResult } from './matcher'
  * Wildcard params are keyed as "wild". If no params, returns empty object.
  */
 export function getPathParams(path: string, rpResult: RegexparamResult) {
-  // Strip values after '#' or '?'
-  path = path.match(/[^\?#]*/)[0]
+  path = removeHashAndQuery(path)
 
   const params: Record<string, string> = {}
   const matchResult = path.match(rpResult.pattern)
@@ -81,6 +80,10 @@ export function joinPaths(...paths: string[]) {
     .map(formatPath)
     .filter((v) => v !== '/')
     .join()
+}
+
+export function removeHashAndQuery(path: string) {
+  return path.match(/[^\?#]*/)[0]
 }
 
 export function removeLeading(str: string, leading: string) {

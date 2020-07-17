@@ -3,8 +3,10 @@ import { matchRoute, routesToMatchers } from './matcher'
 import { formatPath, readonly, removeLeading } from './util'
 
 export interface Route {
-  /** The route full concatenated path */
+  /** The current path, e.g. "/foo/bar" */
   path: string
+  /** The full path including hash and query */
+  fullPath: string
   /**
    * Key-value pairs of route named parameters (denoted with ':') and wildcard
    * parameters (denoted with '*'). Access wildcard values with the 'wild' key.
