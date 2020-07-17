@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "typeRoots": ["../node_modules/@types", "./typings"],
+    "types": ["mocha", "chai", "custom"]
+  },
+  "include": ["**/*.spec.ts"],
+  "exclude": ["./test-app/**/*"]
+}

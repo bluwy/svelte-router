@@ -25,6 +25,7 @@
     "build:tsc": "tsc",
     "build:copy": "node ./scripts/copy-svelte.js",
     "build:bundle": "rollup -c",
+    "test": "TS_NODE_PROJECT=./tests/tsconfig.json mocha",
     "cy:open": "cypress open",
     "format": "prettier --write \"**/*.{ts,md}\"",
     "prepublishOnly": "yarn clean && yarn build"
@@ -37,12 +38,17 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^8.4.0",
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^8.0.0",
+    "chai": "^4.2.0",
     "cypress": "^4.10.0",
+    "mocha": "^8.0.1",
     "prettier": "^2.0.5",
     "prettier-plugin-svelte": "^1.1.0",
     "rollup": "^2.21.0",
     "rollup-plugin-svelte": "^5.2.3",
     "svelte": "^3.24.0",
+    "ts-node": "^8.10.2",
     "typescript": "^3.9.6"
   }
 }
