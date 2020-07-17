@@ -11,11 +11,11 @@ import {
 } from './util'
 
 export interface RouteMatcher {
-  /** The current path */
+  /** The current formatted path */
   path: string
   /** Array of all matched routes for this path */
   matched: RouteRecord[]
-  /** Pre-compute redirect path */
+  /** Un-formatted redirect path */
   redirect?: RedirectOption
   /** Pre-computed regexparam result */
   rpResult: RegexparamResult
@@ -83,41 +83,61 @@ export function routesToMatchers(routes: RouteRecord[]) {
  * route has a redirect, it will recursively match until a route (without
  * redirects) is found.
  *
- * @throws {RouterError} If no route matched
+ * @param visitedPaths Array of route paths that have been previously visited. Used to prevent infinite redirects.
+ *
+ * @throws {RouterError} If infinite redirect loop encountered
  */
-export function matchRoute(path: string, matchers: RouteMatcher[]): Route {
+export function matchRoute(
+  path: string,
+  matchers: RouteMatcher[],
+  visitedPaths: string[] = []
+): Route {
+  const routePath = formatPath(removeHashAndQuery(path))
+
+  // Check infinite redirect loop
+  // NOTE: This won't 100% prevent infinite loops since different paths may
+  // match the same route record (e.g. named param route and wildcard route).
+  // We can only confirm an infinite loop happens when a path matches exactly
+  // as a previously recorded one.
+  if (visitedPaths.includes(routePath)) {
+    // Push current path to be used for error printing
+    visitedPaths.push(routePath)
+
+    const loopStr = visitedPaths.map((v) => `"${v}"`).join(' -> ')
+
+    throw new RouterError(`Infinite redirect loop encountered: ${loopStr}`)
+  }
+
+  // Add self as visited to prevent next redirect loop
+  visitedPaths.push(routePath)
+
   for (let i = 0; i < matchers.length; i++) {
     const matcher = matchers[i]
 
-    if (matcher.rpResult.pattern.test(path)) {
+    if (matcher.rpResult.pattern.test(routePath)) {
       if (matcher.redirect != null) {
         let redirectPath = matcher.redirect
 
         if (typeof redirectPath === 'function') {
-          const to = matcherToRoute(path, matcher)
+          const to = matcherToRoute(routePath, matcher)
           redirectPath = redirectPath(to)
         }
 
-        // Remove self to prevent infinite loop
-        const newMatchers = matchers.slice()
-        newMatchers.splice(i, 1)
-
-        return matchRoute(redirectPath, newMatchers)
+        return matchRoute(redirectPath, matchers, visitedPaths)
       } else {
+        // Use path instead of routePath because it may contain query and hash data
         return matcherToRoute(path, matcher)
       }
     }
   }
 
-  // Since a default catch-all route is present, the only time no route will be
-  // matched is when an infinite loop occurs.
-  // TODO: Better infinite loop error report
-  throw new RouterError(`Infinite loop detected routing to "${path}"`)
+  // This should never be reached since a default catch-all route is present
+  throw new RouterError(`No route found for "${routePath}"`)
 }
 
 /** Converts a route matcher to route object based on path given */
 function matcherToRoute(path: string, matcher: RouteMatcher): Route {
-  const routePath = removeHashAndQuery(path)
+  const routePath = formatPath(removeHashAndQuery(path))
 
   return {
     path: routePath,
