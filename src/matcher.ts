@@ -1,7 +1,13 @@
 import regexparam from 'regexparam'
 import { RedirectOption, RouteRecord, Route } from './create-router'
 import { RouterError } from './error'
-import { joinPaths } from './util'
+import {
+  formatPath,
+  getPathHash,
+  getPathParams,
+  getPathQuery,
+  joinPaths
+} from './util'
 
 export interface RouteMatcher {
   /** The current path */
@@ -14,13 +20,13 @@ export interface RouteMatcher {
   rpResult: RegexparamResult
 }
 
-/** Metadata used on route parent when traversing routes in traverseRoutes */
-type TraverseRoutesParent = Omit<RouteMatcher, 'rpResult'>
-
-interface RegexparamResult {
+export interface RegexparamResult {
   keys: string[]
   pattern: RegExp
 }
+
+/** Metadata used on route parent when traversing routes in traverseRoutes */
+type TraverseRoutesParent = Omit<RouteMatcher, 'rpResult'>
 
 /**
  * Convert the routes as matchers that contains information used in path
@@ -38,7 +44,15 @@ export function routesToMatchers(routes: RouteRecord[]) {
     parent: TraverseRoutesParent,
     children: RouteRecord[]
   ) {
+    // Whether one of the children is a catch-all route
+    let hasCatchAll = false
+
     children.forEach((route) => {
+      // Check if is catch-all route
+      if (formatPath(route.path).startsWith('/*')) {
+        hasCatchAll = true
+      }
+
       // Cumulative metadata when traversing parents
       const info: TraverseRoutesParent = {
         path: joinPaths(parent.path, route.path),
@@ -52,6 +66,12 @@ export function routesToMatchers(routes: RouteRecord[]) {
         matchers.push({ ...info, rpResult: regexparam(info.path) })
       }
     })
+
+    // Automatically setup catch-all route if children doesn't have one
+    if (!hasCatchAll) {
+      const path = joinPaths(parent.path, '/*')
+      matchers.push({ ...parent, path, rpResult: regexparam(path) })
+    }
   }
 
   return matchers
@@ -95,9 +115,9 @@ export function findMatcher(
     }
   }
 
-  throw new RouterError(
-    `No route matched for "${path}". A catch-all route must be setup.`
-  )
+  // This would never happen because there's already a default catch-all path.
+  // But just in case.
+  throw new RouterError(`No route matched for "${path}"`)
 }
 
 /** Converts a route matcher to route object based on path given */
@@ -109,66 +129,4 @@ function matcherToRoute(path: string, matcher: RouteMatcher): Route {
     hash: getPathHash(path),
     query: getPathQuery(path)
   }
-}
-
-/**
- * Get path named params and wildcard params. Uses regexparam to match params.
- * Wildcard params are keyed as "wild". If no params, returns empty object.
- */
-function getPathParams(path: string, rpResult: RegexparamResult) {
-  // Strip values after '#' or '?'
-  path = path.match(/[^\?#]*/)[0]
-
-  const params: Record<string, string> = {}
-  const matchResult = path.match(rpResult.pattern)
-
-  // Math result could be null for no match
-  if (matchResult) {
-    for (let i = 0; i < rpResult.keys.length; i++) {
-      const key = rpResult.keys[i]
-      params[key] = matchResult[i + 1]
-    }
-  }
-
-  return params
-}
-
-/**
- * Get path hash, e.g. "#foo". Returned hash contains initial "#" character.
- * If no hash found, returns empty string.
- */
-function getPathHash(path: string) {
-  const hashIndex = path.indexOf('#')
-
-  if (hashIndex < 0) {
-    return ''
-  }
-
-  const questionIndex = path.indexOf('?')
-
-  if (questionIndex < 0) {
-    return path.slice(hashIndex)
-  }
-
-  return path.slice(hashIndex, questionIndex)
-}
-
-/**
- * Get path query, e.g. { foo: "bar" }. Uses URLSearchParams for query string
- * parsing (No SSR support). If no query found, returns empty object.
- */
-function getPathQuery(path: string) {
-  const query: Record<string, string> = {}
-  const questionIndex = path.indexOf('?')
-
-  if (questionIndex >= 0) {
-    const queryStr = path.slice(questionIndex)
-    const searchParams = new URLSearchParams(queryStr)
-
-    for (const [k, v] of searchParams.entries()) {
-      query[k] = v
-    }
-  }
-
-  return query
 }
