@@ -2,7 +2,7 @@
   import { getContext, setContext } from 'svelte'
   import { DEPTH, NAVIGATE, ROUTE } from './context'
   import { RouterError } from './error'
-  
+
   // Only for root router
   export let router = undefined
 
@@ -13,7 +13,7 @@
   let depth = getContext(DEPTH)
 
   const isRoot = routeStore == null && depth == null
-  
+
   // Initialize routeStore context
   if (isRoot) {
     if (router == null) {
@@ -26,7 +26,7 @@
     setContext(ROUTE, router.route)
     setContext(NAVIGATE, router.navigate)
   }
-  
+
   // Whenever the route changes, re-evaluate route depth
   $: if ($routeStore) {
     if (isRoot) {
