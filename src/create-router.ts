@@ -22,11 +22,11 @@ export interface RouteRecord {
   /** The route path, e.g. "/foo" */
   path: string
   /** Svelte component */
-  component: any
+  component?: any
   /** Redirect to this path */
   redirect?: RedirectOption
   /** Attach custom metadata to this route */
-  meta?: Object
+  meta?: any
   /**
    * Array of children routes. If defined, this route component requires a
    * <Route /> component to render the child route.

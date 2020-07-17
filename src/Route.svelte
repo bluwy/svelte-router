@@ -38,7 +38,7 @@
   }
 
   // Get current matched component for this depth
-  $: component = $routeStore.matched[depth]
+  $: component = $routeStore.matched[depth].component
 </script>
 
 <svelte:component this={component} />
