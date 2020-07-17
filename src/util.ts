@@ -79,11 +79,11 @@ export function joinPaths(...paths: string[]) {
   return paths
     .map(formatPath)
     .filter((v) => v !== '/')
-    .join()
+    .join('')
 }
 
 export function removeHashAndQuery(path: string) {
-  return path.match(/[^\?#]*/)[0]
+  return path.match(/[^\?#]*/)![0]
 }
 
 export function removeLeading(str: string, leading: string) {

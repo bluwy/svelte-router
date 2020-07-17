@@ -61,7 +61,7 @@ export function routesToMatchers(routes: RouteRecord[]) {
         redirect: route.redirect || parent.redirect
       }
 
-      if (route.children?.length > 0) {
+      if (route.children != null && route.children.length > 0) {
         traverseRoutes(info, route.children)
       } else {
         matchers.push({ ...info, rpResult: regexparam(info.path) })
@@ -78,27 +78,19 @@ export function routesToMatchers(routes: RouteRecord[]) {
   return matchers
 }
 
-export function matchRoute(path: string, matchers: RouteMatcher[]) {
-  const matcher = findMatcher(path, matchers)
-  return matcherToRoute(path, matcher)
-}
-
 /**
- * Given the target path and the computed matches, this will loop through the
- * matchers' regexparam pattern and find a match. If the match has a redirect,
- * it recursivesly find a match again.
+ * Finds a route based on target path and the computed matchers. If matched
+ * route has a redirect, it will recursively match until a route (without
+ * redirects) is found.
  *
  * @throws {RouterError} If no route matched
  */
-export function findMatcher(
-  path: string,
-  matchers: RouteMatcher[]
-): RouteMatcher {
+export function matchRoute(path: string, matchers: RouteMatcher[]): Route {
   for (let i = 0; i < matchers.length; i++) {
     const matcher = matchers[i]
 
     if (matcher.rpResult.pattern.test(path)) {
-      if (matcher.redirect) {
+      if (matcher.redirect != null) {
         let redirectPath = matcher.redirect
 
         if (typeof redirectPath === 'function') {
@@ -107,18 +99,20 @@ export function findMatcher(
         }
 
         // Remove self to prevent infinite loop
-        const newMatchers = matchers.slice().splice(i, 1)
+        const newMatchers = matchers.slice()
+        newMatchers.splice(i, 1)
 
-        return findMatcher(redirectPath, newMatchers)
+        return matchRoute(redirectPath, newMatchers)
       } else {
-        return matcher
+        return matcherToRoute(path, matcher)
       }
     }
   }
 
-  // This would never happen because there's already a default catch-all path.
-  // But just in case.
-  throw new RouterError(`No route matched for "${path}"`)
+  // Since a default catch-all route is present, the only time no route will be
+  // matched is when an infinite loop occurs.
+  // TODO: Better infinite loop error report
+  throw new RouterError(`Infinite loop detected routing to "${path}"`)
 }
 
 /** Converts a route matcher to route object based on path given */
