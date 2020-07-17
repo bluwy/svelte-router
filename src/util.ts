@@ -23,36 +23,15 @@ export function getPathParams(path: string, rpResult: RegexparamResult) {
 }
 
 /**
- * Get path hash, e.g. "#foo". Returned hash contains initial "#" character.
- * If no hash found, returns empty string.
- */
-export function getPathHash(path: string) {
-  const hashIndex = path.indexOf('#')
-
-  if (hashIndex < 0) {
-    return ''
-  }
-
-  const questionIndex = path.indexOf('?')
-
-  if (questionIndex < 0) {
-    return path.slice(hashIndex)
-  }
-
-  return path.slice(hashIndex, questionIndex)
-}
-
-/**
  * Get path query, e.g. { foo: "bar" }. Uses URLSearchParams for query string
  * parsing (No SSR support). If no query found, returns empty object.
  */
 export function getPathQuery(path: string) {
   const query: Record<string, string> = {}
-  const questionIndex = path.indexOf('?')
+  const queryStr = path.match(/\?[^#]*/)
 
-  if (questionIndex >= 0) {
-    const queryStr = path.slice(questionIndex)
-    const searchParams = new URLSearchParams(queryStr)
+  if (queryStr != null) {
+    const searchParams = new URLSearchParams(queryStr[0])
 
     for (const [k, v] of searchParams.entries()) {
       query[k] = v
@@ -60,6 +39,15 @@ export function getPathQuery(path: string) {
   }
 
   return query
+}
+
+/**
+ * Get path hash, e.g. "#foo". Returned hash contains initial "#" character.
+ * If no hash found, returns empty string.
+ */
+export function getPathHash(path: string) {
+  const match = path.match(/#.*/)
+  return match != null ? match[0] : ''
 }
 
 /** Makes sure path has leading "/" and no trailing "/" */

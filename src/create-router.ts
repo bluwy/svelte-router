@@ -12,10 +12,10 @@ export interface Route {
    * parameters (denoted with '*'). Access wildcard values with the 'wild' key.
    */
   params: Record<string, string>
-  /** The path hash */
-  hash: string
   /** Key-value pairs of query parameters (The '?' part of the URL) */
   query: Record<string, string>
+  /** The path hash */
+  hash: string
   /** Array of all matched route records for this path */
   matched: RouteRecord[]
 }
@@ -61,9 +61,9 @@ export function createRouter(options: RouterOptions) {
 
   function navigate(to: string, replace = false) {
     if (replace) {
-      history.replaceState(to, null, to)
+      history.replaceState(to, '', to)
     } else {
-      history.pushState(to, null, to)
+      history.pushState(to, '', to)
     }
   }
 

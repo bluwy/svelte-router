@@ -124,7 +124,7 @@ function matcherToRoute(path: string, matcher: RouteMatcher): Route {
     fullPath: path,
     matched: matcher.matched,
     params: getPathParams(path, matcher.rpResult),
-    hash: getPathHash(path),
-    query: getPathQuery(path)
+    query: getPathQuery(path),
+    hash: getPathHash(path)
   }
 }
