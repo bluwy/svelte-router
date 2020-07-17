@@ -44,6 +44,8 @@ export interface RouterOptions {
   routes: RouteRecord[]
 }
 
+export type NavigateFn = (to: string, replace?: boolean) => void
+
 export function createRouter(options: RouterOptions) {
   const basePath = formatPath(options.base ?? '/')
   const matchers = routesToMatchers(options.routes)
@@ -59,7 +61,7 @@ export function createRouter(options: RouterOptions) {
     route.set(matchRoute(path, matchers))
   }
 
-  function navigate(to: string, replace = false) {
+  const navigate: NavigateFn = (to: string, replace = false) => {
     if (replace) {
       history.replaceState(to, '', to)
     } else {

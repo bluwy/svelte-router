@@ -1,10 +1,10 @@
 <script>
   import { getContext, setContext } from 'svelte'
-  import { DEPTH, ROUTE } from './context'
+  import { DEPTH, NAVIGATE, ROUTE } from './context'
   import { RouterError } from './error'
   
   // Only for root router
-  export let route = undefined
+  export let router = undefined
 
   // The readonly route store, mainly used to access matched route records
   let routeStore = getContext(ROUTE)
@@ -16,16 +16,19 @@
   
   // Initialize routeStore context
   if (isRoot) {
-    if (route == null) {
-      throw new RouterError('The root route requires the route prop.')
+    if (router == null) {
+      throw new RouterError('The root route requires the router prop.')
     }
 
-    routeStore = route
-    setContext(ROUTE, route)
+    routeStore = router.route
+
+    // Set context to be used by descendants
+    setContext(ROUTE, router.route)
+    setContext(NAVIGATE, router.navigate)
   }
   
   // Whenever the route changes, re-evaluate route depth
-  $: if ($route) {
+  $: if ($routeStore) {
     if (isRoot) {
       // Reset depth
       depth = 0
