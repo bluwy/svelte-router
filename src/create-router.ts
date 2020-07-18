@@ -1,6 +1,7 @@
 import { writable } from 'svelte/store'
+import { RouterMode, createHistory } from './history'
 import { matchRoute, routesToMatchers } from './matcher'
-import { formatPath, readonly, removeLeading, joinPaths } from './util'
+import { formatPath, removeLeading } from './util'
 
 export interface Route {
   /** The current path, e.g. "/foo/bar" */
@@ -41,61 +42,58 @@ export type RedirectOption = string | ((to: Route) => string)
 export interface RouterOptions {
   /** The base path of your application */
   base?: string
+  /** The routing mode: "hash" or "history". Default: "hash" */
+  mode?: RouterMode
   routes: RouteRecord[]
 }
 
+export type Router = ReturnType<typeof createRouter>
+
 export function createRouter(options: RouterOptions) {
-  const basePath = formatPath(options.base ?? '/')
+  const basePath = formatPath(options.base ?? '')
+  const hist = createHistory(options.mode ?? 'hash')
   const matchers = routesToMatchers(options.routes)
   const route = writable({} as Route)
+  let histListener: Function | undefined
 
-  window.addEventListener('popstate', initRoute)
+  listen()
 
-  function initRoute() {
-    const currentPath = formatPath(removeLeading(location.pathname, basePath))
-    const matched = matchRoute(currentPath, matchers)
-
-    // Check if needs to be redirected
-    if (typeof matched === 'string') {
-      // NOTE: This may cause infinite redirects, but I don't think it's our job
-      // to prevent it
-      navigate(matched, true)
-      return
+  /** Starts listening for path changes. This will  */
+  function listen() {
+    if (histListener == null) {
+      histListener = hist.listen(handlePathChange)
+      handlePathChange()
     }
-
-    route.set(matched)
   }
 
-  function navigate(to: string, replace = false) {
-    const matched = matchRoute(to, matchers)
+  function unlisten() {
+    if (histListener != null) {
+      histListener()
+    }
+  }
+
+  function handlePathChange() {
+    const path = formatPath(removeLeading(location.pathname, basePath))
+    const matched = matchRoute(path, matchers)
 
     // Check if needs to be redirected
+    // NOTE: This may cause infinite redirects, but I don't think it's our job
+    // to prevent it
     if (typeof matched === 'string') {
-      // NOTE: This may cause infinite redirects, but I don't think it's our job
-      // to prevent it
-      navigate(matched, true)
-      return
-    }
-
-    route.set(matched)
-
-    const finalPath = joinPaths(basePath, to)
-
-    // TODO: Use generalized history function/class to support hash-based routing
-    if (replace) {
-      history.replaceState(finalPath, '', finalPath)
+      hist.replace(matched)
     } else {
-      history.pushState(finalPath, '', finalPath)
+      route.set(matched)
     }
-  }
-
-  function destroy() {
-    window.removeEventListener('popstate', initRoute)
   }
 
   return {
-    route: readonly(route),
-    navigate,
-    destroy
+    subscribe: route.subscribe,
+    push: hist.push,
+    replace: hist.replace,
+    go: hist.go,
+    forward: hist.forward,
+    back: hist.back,
+    listen,
+    unlisten
   }
 }

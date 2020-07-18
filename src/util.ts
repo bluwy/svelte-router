@@ -1,4 +1,3 @@
-import { Readable, Writable } from 'svelte/store'
 import { RegexparamResult } from './matcher'
 
 export function isCatchAllPath(path: string) {
@@ -95,9 +94,4 @@ export function removeHashAndQuery(path: string) {
 
 export function removeLeading(str: string, leading: string) {
   return str.startsWith(leading) ? str.slice(leading.length) : str
-}
-
-/** Make writable store readonly */
-export function readonly<T>(writable: Writable<T>): Readable<T> {
-  return { subscribe: writable.subscribe }
 }
