@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store'
 import { matchRoute, routesToMatchers } from './matcher'
-import { formatPath, readonly, removeLeading } from './util'
+import { formatPath, readonly, removeLeading, joinPaths } from './util'
 
 export interface Route {
   /** The current path, e.g. "/foo/bar" */
@@ -44,33 +44,53 @@ export interface RouterOptions {
   routes: RouteRecord[]
 }
 
-export type NavigateFn = (to: string, replace?: boolean) => void
-
 export function createRouter(options: RouterOptions) {
   const basePath = formatPath(options.base ?? '/')
   const matchers = routesToMatchers(options.routes)
   const route = writable({} as Route)
 
-  window.addEventListener('popstate', handleState)
+  window.addEventListener('popstate', initRoute)
 
-  handleState()
+  function initRoute() {
+    const currentPath = formatPath(removeLeading(location.pathname, basePath))
+    const matched = matchRoute(currentPath, matchers)
 
-  function handleState() {
-    const path = formatPath(removeLeading(location.pathname, basePath))
-    route.set(matchRoute(path, matchers))
+    // Check if needs to be redirected
+    if (typeof matched === 'string') {
+      // NOTE: This may cause infinite redirects, but I don't think it's our job
+      // to prevent it
+      navigate(matched, true)
+      return
+    }
+
+    route.set(matched)
   }
 
-  const navigate: NavigateFn = (to: string, replace = false) => {
-    if (replace) {
-      history.replaceState(to, '', to)
-    } else {
-      history.pushState(to, '', to)
+  function navigate(to: string, replace = false) {
+    const matched = matchRoute(to, matchers)
+
+    // Check if needs to be redirected
+    if (typeof matched === 'string') {
+      // NOTE: This may cause infinite redirects, but I don't think it's our job
+      // to prevent it
+      navigate(matched, true)
+      return
     }
-    handleState()
+
+    route.set(matched)
+
+    const finalPath = joinPaths(basePath, to)
+
+    // TODO: Use generalized history function/class to support hash-based routing
+    if (replace) {
+      history.replaceState(finalPath, '', finalPath)
+    } else {
+      history.pushState(finalPath, '', finalPath)
+    }
   }
 
   function destroy() {
-    window.removeEventListener('popstate', handleState)
+    window.removeEventListener('popstate', initRoute)
   }
 
   return {
