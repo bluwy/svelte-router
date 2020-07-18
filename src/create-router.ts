@@ -54,7 +54,7 @@ export function createRouter(options: RouterOptions) {
   window.addEventListener('popstate', handleState)
 
   handleState()
-  
+
   function handleState() {
     const path = formatPath(removeLeading(location.pathname, basePath))
     route.set(matchRoute(path, matchers))

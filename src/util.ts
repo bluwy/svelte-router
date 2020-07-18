@@ -1,12 +1,19 @@
 import { Readable, Writable } from 'svelte/store'
 import { RegexparamResult } from './matcher'
 
+export function isCatchAllPath(path: string) {
+  return path === '' || path.startsWith('*') || path.startsWith('/*')
+}
+
 /**
  * Get path named params and wildcard params. Uses regexparam to match params.
  * Wildcard params are keyed as "wild". If no params, returns empty object.
  */
 export function getPathParams(path: string, rpResult: RegexparamResult) {
-  path = removeHashAndQuery(path)
+  // Add trailing slash so it properly matches nested routes too.
+  // e.g. /foo should match /foo/*
+  // This way the wild property can be an empty string, otherwise undefined
+  path = addTrailingSlash(removeHashAndQuery(path))
 
   const params: Record<string, string> = {}
   const matchResult = path.match(rpResult.pattern)
@@ -16,6 +23,10 @@ export function getPathParams(path: string, rpResult: RegexparamResult) {
     for (let i = 0; i < rpResult.keys.length; i++) {
       const key = rpResult.keys[i]
       params[key] = matchResult[i + 1]
+    }
+
+    if ('wild' in params) {
+      params.wild = formatPath(params.wild)
     }
   }
 
@@ -68,6 +79,14 @@ export function joinPaths(...paths: string[]) {
     .map(formatPath)
     .filter((v) => v !== '/')
     .join('')
+}
+
+export function addTrailingSlash(path: string) {
+  if (!path.endsWith('/')) {
+    path += '/'
+  }
+
+  return path
 }
 
 export function removeHashAndQuery(path: string) {

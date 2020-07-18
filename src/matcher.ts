@@ -2,10 +2,12 @@ import regexparam from 'regexparam'
 import { RedirectOption, RouteRecord, Route } from './create-router'
 import { RouterError } from './error'
 import {
+  addTrailingSlash,
   formatPath,
   getPathHash,
   getPathParams,
   getPathQuery,
+  isCatchAllPath,
   joinPaths,
   removeHashAndQuery
 } from './util'
@@ -50,18 +52,24 @@ export function routesToMatchers(routes: RouteRecord[]) {
 
     children.forEach((route) => {
       // Check if is catch-all route
-      if (formatPath(route.path).startsWith('/*')) {
-        hasCatchAll = true
-      }
+      const isCatchAll = isCatchAllPath(route.path)
+
+      // Standardize catch-all syntax so it generates proper regex
+      const routePath = isCatchAll ? '/*' : route.path
 
       // Cumulative metadata when traversing parents
       const info: TraverseRoutesParent = {
-        path: joinPaths(parent.path, route.path),
+        path: joinPaths(parent.path, routePath),
         matched: parent.matched.concat(route),
         redirect: route.redirect || parent.redirect
       }
 
-      if (route.children != null && route.children.length > 0) {
+      if (isCatchAll) {
+        hasCatchAll = true
+      }
+
+      // Ignore children is is catch-all route
+      if (!isCatchAll && route.children != null && route.children.length > 0) {
         traverseRoutes(info, route.children)
       } else {
         matchers.push({ ...info, rpResult: regexparam(info.path) })
@@ -114,7 +122,9 @@ export function matchRoute(
   for (let i = 0; i < matchers.length; i++) {
     const matcher = matchers[i]
 
-    if (matcher.rpResult.pattern.test(routePath)) {
+    // Add trailing slash to route path so it properly matches nested routes too.
+    // e.g. /foo should match /foo/*
+    if (matcher.rpResult.pattern.test(addTrailingSlash(routePath))) {
       if (matcher.redirect != null) {
         let redirectPath = matcher.redirect
 
