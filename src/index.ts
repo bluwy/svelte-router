@@ -1,2 +1,4 @@
-export { default as Route } from './Route.svelte'
-export { createRouter } from './create-router'
+export { default as RouterView } from './RouterView.svelte'
+export { getNavigate, getRoute } from './context'
+export * from './create-router'
+export * from './error'
