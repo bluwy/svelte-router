@@ -95,15 +95,41 @@ export function routesToMatchers(routes: RouteRecord[]) {
 
 /**
  * Finds a route based on target path and the computed matchers. If matched
- * route has a redirect, it will return a string to the redirected path instead.
+ * route has a redirect, it will recursively match until a route (without
+ * redirects) is found.
+ *
+ * @param visitedPaths Array of route paths that have been previously visited.
+ *   Used to prevent infinite redirects.
+ *
+ * @throws {RouterError} If infinite redirect loop encountered
  */
 export function matchRoute(
   path: string,
-  matchers: RouteMatcher[]
-): Route | string {
+  matchers: RouteMatcher[],
+  visitedPaths: string[] = []
+): Route {
   const routePath = formatPath(removeHashAndQuery(path))
 
-  for (const matcher of matchers) {
+  // Check infinite redirect loop
+  // NOTE: This won't 100% prevent infinite loops since different paths may
+  // match the same route record (e.g. named param route and wildcard route).
+  // We can only confirm an infinite loop happens when a path matches exactly
+  // as a previously recorded one.
+  if (visitedPaths.includes(routePath)) {
+    // Push current path to be used for error printing
+    visitedPaths.push(routePath)
+
+    const loopStr = visitedPaths.map((v) => `"${v}"`).join(' -> ')
+
+    throw new RouterError(`Infinite redirect loop encountered: ${loopStr}`)
+  }
+
+  // Add self as visited to prevent next redirect loop
+  visitedPaths.push(routePath)
+
+  for (let i = 0; i < matchers.length; i++) {
+    const matcher = matchers[i]
+
     // Add trailing slash to route path so it properly matches nested routes too.
     // e.g. /foo should match /foo/*
     if (matcher.rpResult.pattern.test(addTrailingSlash(routePath))) {
@@ -115,7 +141,7 @@ export function matchRoute(
           redirectPath = redirectPath(to)
         }
 
-        return redirectPath
+        return matchRoute(redirectPath, matchers, visitedPaths)
       } else {
         // Use path instead of routePath because it may contain query and hash data
         return matcherToRoute(path, matcher)

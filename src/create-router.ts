@@ -76,11 +76,10 @@ export function createRouter(options: RouterOptions) {
     const path = formatPath(removeLeading(location.pathname, basePath))
     const matched = matchRoute(path, matchers)
 
-    // Check if needs to be redirected
-    // NOTE: This may cause infinite redirects, but I don't think it's our job
-    // to prevent it
-    if (typeof matched === 'string') {
-      hist.replace(matched)
+    // Redirects happen when the result full path is not the same as passed
+    if (path !== matched.fullPath) {
+      // TODO: Optimize instead of replace and re-triggering handlePathChange
+      hist.replace(matched.fullPath)
     } else {
       route.set(matched)
     }
