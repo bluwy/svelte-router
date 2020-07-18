@@ -51,13 +51,12 @@ export function createRouter(options: RouterOptions) {
   const matchers = routesToMatchers(options.routes)
   const route = writable({} as Route)
 
-  window.addEventListener('pushstate', handleState)
   window.addEventListener('popstate', handleState)
-  window.addEventListener('replacestate', handleState)
 
+  handleState()
+  
   function handleState() {
-    const pathname = formatPath(location.pathname)
-    const path = removeLeading(pathname, basePath)
+    const path = formatPath(removeLeading(location.pathname, basePath))
     route.set(matchRoute(path, matchers))
   }
 
@@ -67,12 +66,11 @@ export function createRouter(options: RouterOptions) {
     } else {
       history.pushState(to, '', to)
     }
+    handleState()
   }
 
   function destroy() {
-    window.removeEventListener('pushstate', handleState)
     window.removeEventListener('popstate', handleState)
-    window.removeEventListener('replacestate', handleState)
   }
 
   return {
