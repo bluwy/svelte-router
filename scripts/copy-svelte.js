@@ -11,6 +11,6 @@ const cwd = process.cwd()
 
 // Copy Route component
 fs.copyFileSync(
-  path.resolve(cwd, 'src/Route.svelte'),
-  path.resolve(cwd, 'dist/Route.svelte')
+  path.resolve(cwd, 'src/RouterView.svelte'),
+  path.resolve(cwd, 'dist/RouterView.svelte')
 )
