@@ -29,7 +29,7 @@
     "test-app:start": "rollup -c tests/test-app/rollup.config.js",
     "cy:open": "yarn start:test-app && cypress open",
     "cy:run": "cypress run --headless",
-    "format": "prettier --write \"**/*.{ts,svelte,md}\"",
+    "format": "prettier --write \"**/*.{js,ts,svelte,md}\"",
     "prepublishOnly": "yarn clean && yarn build"
   },
   "peerDependencies": {
@@ -53,6 +53,7 @@
     "rollup-plugin-serve": "^1.0.2",
     "rollup-plugin-svelte": "^5.2.3",
     "svelte": "^3.24.0",
+    "svelte-preprocess": "^4.0.8",
     "ts-node": "^8.10.2",
     "tslib": "^2.0.0",
     "typescript": "^3.9.6"

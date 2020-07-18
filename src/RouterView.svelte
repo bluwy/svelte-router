@@ -1,16 +1,17 @@
-<script>
+<script lang="ts">
   import { getContext, setContext } from 'svelte'
+  import { Router } from './create-router'
   import { DEPTH, ROUTER } from './context'
   import { RouterError } from './error'
 
   // Only for root router
-  export let router = undefined
+  export let router: Router | undefined = undefined
 
   // The readonly route store, mainly used to access matched route records
-  let routerStore = getContext(ROUTER)
+  let routerStore: Router = getContext(ROUTER)
 
   // The current rendered component, will be incremented when traversing nested routes
-  let depth = getContext(DEPTH)
+  let depth: number = getContext(DEPTH)
 
   const isRoot = routerStore == null && depth == null
 
@@ -23,7 +24,7 @@
     routerStore = router
 
     // Set context to be used by descendants
-    setContext(ROUTE, router)
+    setContext(ROUTER, router)
   }
 
   // Whenever the route changes, re-evaluate route depth
