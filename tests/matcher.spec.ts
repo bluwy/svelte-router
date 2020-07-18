@@ -35,8 +35,11 @@ describe('matcher', function () {
           children: [{ path: '/bar' }]
         }
       ])
-      const route = matchRoute('/foo/bar', matchers)
-      expect(route.matched[1].path).to.equal('/bar')
+      const route1 = matchRoute('/foo/bar', matchers)
+      const route2 = matchRoute('/foo', matchers)
+      expect(route1.matched[1].path).to.equal('/bar')
+      expect(route2.matched.length).to.equal(1)
+      expect(route2.matched[0].path).to.equal('/foo')
     })
 
     it('should be tolerant to oddly named paths', function () {
@@ -48,10 +51,10 @@ describe('matcher', function () {
       ])
       const route1 = matchRoute('/foo/bar', matchers)
       const route2 = matchRoute('/foo/baz', matchers)
-      const route3 = matchRoute('/foo/bla', matchers)
+      const route3 = matchRoute('/foo/bla/', matchers)
       expect(route1.matched[1].path).to.equal('bar/')
       expect(route2.matched[1].path).to.equal('baz')
-      expect(route3.params.wild).to.equal('bla')
+      expect(route3.params.wild).to.equal('/bla')
     })
   })
 
