@@ -9,11 +9,11 @@ export interface Route {
   /** The full path including hash and query */
   fullPath: string
   /**
-   * Key-value pairs of route named parameters (denoted with ':') and wildcard
-   * parameters (denoted with '*'). Access wildcard values with the 'wild' key.
+   * Key-value pairs of route named parameters (denoted with ":") and wildcard
+   * parameters (denoted with "*"). Access wildcard values with the 'wild' key.
    */
   params: Record<string, string>
-  /** Key-value pairs of query parameters (The '?' part of the URL) */
+  /** Key-value pairs of query parameters (The "?" part of the URL) */
   query: Record<string, string>
   /** The path hash */
   hash: string
@@ -81,7 +81,7 @@ export function createRouter(options: RouterOptions) {
   }
 
   function handlePathChange() {
-    const path = formatPath(removeLeading(location.pathname, basePath))
+    const path = formatPath(removeLeading(hist.location.pathname, basePath))
     const matched = matchRoute(path, matchers)
 
     // Redirects happen when the result full path is not the same as passed

@@ -10,38 +10,41 @@
   // The readonly route store, mainly used to access matched route records
   let routerStore: Router = getContext(ROUTER)
 
-  // The current rendered component, will be incremented when traversing nested routes
-  let depth: number = getContext(DEPTH)
+  // The depth that will be incremented when traversing nested routes
+  let depth = getContext(DEPTH)
+
+  let currentDepth = 0
 
   const isRoot = routerStore == null && depth == null
 
-  // Initialize routeStore context
+  // Initialize context
   if (isRoot) {
     if (router == null) {
-      throw new RouterError('The root route requires the router prop.')
+      throw new RouterError('The root RouterView requires the "router" prop.')
     }
 
     routerStore = router
+    setContext(ROUTER, routerStore)
 
-    // Set context to be used by descendants
-    setContext(ROUTER, router)
+    depth = {}
+    setContext(DEPTH, depth)
   }
 
   // Whenever the route changes, re-evaluate route depth
   $: if ($routerStore) {
     if (isRoot) {
       // Reset depth
-      depth = 0
-      setContext(DEPTH, 0)
+      depth.value = 0
+      currentDepth = 0
     } else {
       // Subsequent component will get new depth sequentially
-      depth = getContext(DEPTH) + 1
-      setContext(DEPTH, depth)
+      depth.value += 1
+      currentDepth = depth.value
     }
   }
 
   // Get current matched component for this depth
-  $: component = $routerStore.matched[depth]?.component
+  $: component = $routerStore.matched[currentDepth]?.component
 </script>
 
 <svelte:component this={component} />
