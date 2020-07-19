@@ -4,4 +4,4 @@ import { Router } from './create-router'
 export const ROUTER = {}
 export const DEPTH = {}
 
-export const getRoute = (): Router => getContext(ROUTER)
+export const getRouter = (): Router => getContext(ROUTER)

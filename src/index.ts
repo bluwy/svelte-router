@@ -1,4 +1,4 @@
 export { default as RouterView } from './RouterView.svelte'
-export { getRoute } from './context'
+export { getRouter } from './context'
 export * from './create-router'
 export * from './error'
