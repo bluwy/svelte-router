@@ -1,8 +1,8 @@
 <script lang="ts">
   import { getContext, setContext } from 'svelte'
-  import type { Router } from './create-router'
   import { DEPTH, ROUTER } from './context'
   import { RouterError } from './error'
+  import type { Router } from './router'
 
   // Only for root router
   export let router: Router | undefined = undefined

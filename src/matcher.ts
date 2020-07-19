@@ -1,6 +1,6 @@
 import regexparam from 'regexparam'
-import { RedirectOption, RouteRecord, Route } from './create-router'
 import { RouterError } from './error'
+import type { RedirectOption, RouteRecord, Route } from './router'
 import {
   addTrailingSlash,
   formatPath,
