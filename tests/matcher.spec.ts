@@ -78,6 +78,12 @@ describe('matcher', function () {
       expect(route.matched.length).to.equal(1)
       expect(route.matched[0].path).to.equal('/foo')
     })
+
+    it('should default catch-all should have wild param', function () {
+      const matchers = routesToMatchers([])
+      const route = matchRoute('/foo/bar/', matchers)
+      expect(route.params.wild).to.eq('/foo/bar')
+    })
   })
 
   context('parsing', function () {

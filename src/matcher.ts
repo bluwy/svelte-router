@@ -109,6 +109,9 @@ export function matchRoute(
   visitedPaths: string[] = []
 ): Route {
   const routePath = formatPath(removeHashAndQuery(path))
+  // Add trailing slash to route path so it properly matches nested routes too.
+  // e.g. /foo should match /foo/*
+  const matchPath = addTrailingSlash(routePath)
 
   // Check infinite redirect loop
   // NOTE: This won't 100% prevent infinite loops since different paths may
@@ -127,12 +130,8 @@ export function matchRoute(
   // Add self as visited to prevent next redirect loop
   visitedPaths.push(routePath)
 
-  for (let i = 0; i < matchers.length; i++) {
-    const matcher = matchers[i]
-
-    // Add trailing slash to route path so it properly matches nested routes too.
-    // e.g. /foo should match /foo/*
-    if (matcher.rpResult.pattern.test(addTrailingSlash(routePath))) {
+  for (const matcher of matchers) {
+    if (matcher.rpResult.pattern.test(matchPath)) {
       if (matcher.redirect != null) {
         let redirectPath = matcher.redirect
 
