@@ -36,7 +36,7 @@ type TraverseRoutesParent = Pick<RouteMatcher, 'path' | 'matched'>
  * matching. This will recursively traverse child routes and flatten to a list
  * of matchers.
  */
-export function routesToMatchers(routes: RouteRecord[]) {
+export function routesToMatchers(routes: RouteRecord[] = []) {
   const matchers: RouteMatcher[] = []
 
   // Start from empty parent, assume the routes given is a child of an unknown parent

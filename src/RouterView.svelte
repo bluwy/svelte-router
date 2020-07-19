@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getContext, setContext } from 'svelte'
-  import { Router } from './create-router'
+  import type { Router } from './create-router'
   import { DEPTH, ROUTER } from './context'
   import { RouterError } from './error'
 

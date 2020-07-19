@@ -44,7 +44,7 @@ export interface RouterOptions {
   base?: string
   /** The routing mode: "hash" or "history". Default: "hash" */
   mode?: RouterMode
-  routes: RouteRecord[]
+  routes?: RouteRecord[]
 }
 
 export type Router = ReturnType<typeof createRouter>
@@ -58,7 +58,10 @@ export function createRouter(options: RouterOptions) {
 
   listen()
 
-  /** Starts listening for path changes. This will  */
+  /**
+   * Starts listening for path changes. This will be automatically called on
+   * router initialization. Call `unlisten` to stop the router.
+   */
   function listen() {
     if (histListener == null) {
       histListener = hist.listen(handlePathChange)
@@ -66,6 +69,11 @@ export function createRouter(options: RouterOptions) {
     }
   }
 
+  /**
+   * Stops listening for path changes. You generally won't have to call this
+   * since the router is attached per app instance. Call `listen` to re-start
+   * the router.
+   */
   function unlisten() {
     if (histListener != null) {
       histListener()
