@@ -2,6 +2,7 @@ import { writable } from 'svelte/store'
 import { RouterMode, createHistory } from './history'
 import { matchRoute, routesToMatchers } from './matcher'
 import { formatPath, removeLeading } from './util'
+import { createLinkAction } from './actions'
 
 export interface Route {
   /** The current path, e.g. "/foo/bar" */
@@ -101,6 +102,7 @@ export function createRouter(options: RouterOptions) {
     forward: hist.forward,
     back: hist.back,
     listen,
-    unlisten
+    unlisten,
+    link: createLinkAction(hist.push, hist.replace)
   }
 }
