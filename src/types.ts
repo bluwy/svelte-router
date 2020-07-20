@@ -44,17 +44,6 @@ export interface RouterOptions {
   routes?: RouteRecord[]
 }
 
-export interface RouteMatcher {
-  /** The current formatted path */
-  path: string
-  /** Array of all matched routes for this path */
-  matched: RouteRecord[]
-  /** Un-formatted redirect path */
-  redirect?: RedirectOption
-  /** Pre-computed regexparam result */
-  rpResult: RegexparamResult
-}
-
 export interface RegexparamResult {
   keys: string[]
   pattern: RegExp

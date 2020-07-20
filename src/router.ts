@@ -1,7 +1,7 @@
 import type { Route, RouterOptions } from './types'
 import { writable, Readable } from 'svelte/store'
 import { createHistory } from './history'
-import { routesToMatchers, matchRoute } from './matcher'
+import { RouteMatcher } from './matcher'
 import { formatPath, removeLeading, joinPaths } from './util'
 
 let _route = writable({} as Route)
@@ -25,14 +25,14 @@ export function initRouter(options?: RouterOptions) {
 function createRouter(options?: RouterOptions) {
   const basePath = formatPath(options?.base ?? '')
   const hist = createHistory(options?.mode ?? 'hash')
-  const matchers = routesToMatchers(options?.routes)
+  const matcher = new RouteMatcher(options?.routes)
 
   hist.listen(handlePathChange)
   handlePathChange()
 
   function handlePathChange() {
     const path = formatPath(removeLeading(hist.location.pathname, basePath))
-    const matched = matchRoute(path, matchers)
+    const matched = matcher.matchRoute(path)
 
     // Redirects happen when the result full path is not the same as passed
     if (path !== matched.fullPath) {
