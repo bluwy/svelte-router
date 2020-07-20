@@ -1,5 +1,5 @@
 import App from './App.svelte'
-import './router-setup'
+import './router'
 
 const app = new App({
   target: document.getElementById('app') as Element

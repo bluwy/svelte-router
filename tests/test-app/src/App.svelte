@@ -1,20 +1,19 @@
 <script lang="ts">
-  import { RouterView } from './package'
-  import { router } from './router'
+  import { link, router, RouterView } from './package'
 
   let profileId = ''
 </script>
 
 <div>
-  <div>
-    <button on:click={() => router.push('/home')}>Home</button>
-    <button on:click={() => router.push('/welcome')}>Welcome</button>
-    <button on:click={() => router.push('/non-exist')}>Non exist</button>
+  <div use:link>
+    <a href="/home">Home</a>
+    <a href="/welcome">Welcome</a>
+    <a href="/non-exist">Non exist</a>
   </div>
   <div>
     <input id="profile-id" type="text" bind:value={profileId} />
     <button on:click={() => router.push(`/profile/${profileId}`)}>Login</button>
   </div>
   <h1>Welcome to Svelte Routing Test</h1>
-  <RouterView {router} />
+  <RouterView />
 </div>
