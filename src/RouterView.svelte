@@ -1,37 +1,24 @@
 <script lang="ts">
   import { getContext, setContext } from 'svelte'
-  import { DEPTH, ROUTER } from './context'
+  import { DEPTH } from './context'
   import { RouterError } from './error'
-  import type { Router } from './router'
-
-  // Only for root router
-  export let router: Router | undefined = undefined
-
-  // The readonly route store, mainly used to access matched route records
-  let routerStore: Router = getContext(ROUTER)
+  import { route } from './router'
 
   // The depth that will be incremented when traversing nested routes
-  let depth = getContext(DEPTH)
+  let depth: { value: number } = getContext(DEPTH)
 
   let currentDepth = 0
 
-  const isRoot = routerStore == null && depth == null
+  const isRoot = depth == null
 
   // Initialize context
   if (isRoot) {
-    if (router == null) {
-      throw new RouterError('The root RouterView requires the "router" prop.')
-    }
-
-    routerStore = router
-    setContext(ROUTER, routerStore)
-
-    depth = {}
+    depth = { value: 0 }
     setContext(DEPTH, depth)
   }
 
   // Whenever the route changes, re-evaluate route depth
-  $: if ($routerStore) {
+  $: if ($route) {
     if (isRoot) {
       // Reset depth
       depth.value = 0
@@ -44,7 +31,12 @@
   }
 
   // Get current matched component for this depth
-  $: component = $routerStore.matched[currentDepth]?.component
+  let component: any
+  $: component = $route.matched[currentDepth]?.component
 </script>
 
-<svelte:component this={component} />
+{#if component != null}
+  <svelte:component this={component} />
+{:else if currentDepth + 1 < $route.matched.length}
+  <svelte:self />
+{/if}

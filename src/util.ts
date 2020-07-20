@@ -1,4 +1,4 @@
-import { RegexparamResult } from './matcher'
+import { RegexparamResult } from './types'
 
 export function isCatchAllPath(path: string) {
   return path === '' || path.startsWith('*') || path.startsWith('/*')

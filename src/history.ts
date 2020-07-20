@@ -1,11 +1,10 @@
+import type { RouterMode } from './types'
 import {
   createBrowserHistory,
   createHashHistory,
   History,
   State
 } from 'history'
-
-export type RouterMode = 'hash' | 'history'
 
 export function createHistory(mode: RouterMode): History<State> {
   switch (mode) {

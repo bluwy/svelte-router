@@ -1,6 +1,6 @@
+import type { Route, RouteMatcher, RouteRecord } from './types'
 import regexparam from 'regexparam'
 import { RouterError } from './error'
-import type { RedirectOption, RouteRecord, Route } from './router'
 import {
   addTrailingSlash,
   formatPath,
@@ -11,22 +11,6 @@ import {
   joinPaths,
   removeHashAndQuery
 } from './util'
-
-export interface RouteMatcher {
-  /** The current formatted path */
-  path: string
-  /** Array of all matched routes for this path */
-  matched: RouteRecord[]
-  /** Un-formatted redirect path */
-  redirect?: RedirectOption
-  /** Pre-computed regexparam result */
-  rpResult: RegexparamResult
-}
-
-export interface RegexparamResult {
-  keys: string[]
-  pattern: RegExp
-}
 
 /** Metadata used on route parent when traversing routes in traverseRoutes */
 type TraverseRoutesParent = Pick<RouteMatcher, 'path' | 'matched'>
