@@ -1,4 +1,4 @@
-import { LocationInput } from './history/base'
+import { LocationInput } from './types'
 import { routerHistory } from './router'
 
 export function navigate(to: number): void

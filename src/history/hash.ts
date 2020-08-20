@@ -1,7 +1,8 @@
 import { readable } from 'svelte/store'
 import { LOCATION_CHANGE } from '../location-change-shim'
 import { formatPath } from '../util'
-import { DUMMY_LOCATION, RouterHistory, LocationInput } from './base'
+import { DUMMY_LOCATION, RouterHistory } from './base'
+import { LocationInput } from '../types'
 
 export class HashHistory implements RouterHistory {
   readonly currentLocation = readable(DUMMY_LOCATION, (set) => {
@@ -14,7 +15,7 @@ export class HashHistory implements RouterHistory {
     }
 
     handleLocationChange()
-    
+
     window.addEventListener(LOCATION_CHANGE, handleLocationChange)
 
     return () =>

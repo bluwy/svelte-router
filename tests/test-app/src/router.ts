@@ -22,9 +22,24 @@ initRouter({
         },
         {
           path: '/bio',
-          component: ProfileBio
+          component: ProfileBio,
+          redirect: () =>
+            new Promise((resolve) => {
+              setTimeout(() => {
+                resolve(undefined)
+              }, 1000)
+            })
         }
       ]
+    },
+    {
+      path: '/secret',
+      redirect: () =>
+        new Promise((resolve) => {
+          setTimeout(() => {
+            resolve('/home')
+          }, 1000)
+        })
     },
     {
       path: '/*',

@@ -1,3 +1,5 @@
+import { Promisable } from './types'
+
 /** Makes sure path has leading "/" and no trailing "/" */
 export function formatPath(path: string) {
   if (path.endsWith('/')) {
@@ -24,4 +26,15 @@ export function addTrailingSlash(path: string) {
   }
 
   return path
+}
+
+export function handlePromisable<T>(
+  promisable: Promisable<T>,
+  callback: (value: T) => void
+) {
+  if (promisable instanceof Promise) {
+    promisable.then(callback)
+  } else {
+    callback(promisable)
+  }
 }

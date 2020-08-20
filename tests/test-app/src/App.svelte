@@ -11,7 +11,9 @@
   </div>
   <div>
     <input id="profile-id" type="text" bind:value={profileId} />
-    <button on:click={() => navigate(`/profile/${profileId}/welcome`)}>Login</button>
+    <button on:click={() => navigate(`/profile/${profileId}/welcome`)}>
+      Login
+    </button>
   </div>
   <h1>Svelte Routing Test</h1>
   <RouterView />

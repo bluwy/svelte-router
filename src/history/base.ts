@@ -1,15 +1,10 @@
 import { Readable } from 'svelte/store'
+import { LocationInput } from '../types'
 
 export interface LocationData {
   path: string
   search: URLSearchParams
   hash: string
-}
-
-export interface LocationInput {
-  path?: string
-  search?: ConstructorParameters<typeof URLSearchParams>[0]
-  hash?: string
 }
 
 export interface RouterHistory {

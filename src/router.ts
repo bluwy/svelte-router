@@ -37,8 +37,6 @@ export function initRouter(options: RouterOptions) {
     route = derived(routerHistory.currentLocation, ($currentLocation) => {
       const matchedRoute = matcher.matchRoute($currentLocation.path)
 
-      console.log($currentLocation, matchedRoute)
-      
       return {
         ...$currentLocation,
         params: matchedRoute?.params ?? {},
