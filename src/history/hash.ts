@@ -13,6 +13,8 @@ export class HashHistory implements RouterHistory {
       })
     }
 
+    handleLocationChange()
+    
     window.addEventListener(LOCATION_CHANGE, handleLocationChange)
 
     return () =>

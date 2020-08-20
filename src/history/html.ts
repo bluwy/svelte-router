@@ -14,6 +14,8 @@ export class HtmlHistory implements RouterHistory {
       })
     }
 
+    handleLocationChange()
+    
     window.addEventListener(LOCATION_CHANGE, handleLocationChange)
 
     return () =>
