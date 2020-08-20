@@ -6,6 +6,7 @@ import ProfileBio from './views/ProfileBio.svelte'
 import Null from './views/Null.svelte'
 
 initRouter({
+  mode: 'history',
   routes: [
     {
       path: '/home',
@@ -24,10 +25,6 @@ initRouter({
           component: ProfileBio
         }
       ]
-    },
-    {
-      path: '/welcome',
-      redirect: '/profile/fake/welcome'
     },
     {
       path: '/*',

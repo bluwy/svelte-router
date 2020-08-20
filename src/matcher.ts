@@ -1,31 +1,26 @@
-import type {
-  Route,
-  RedirectOption,
-  RouteRecord,
-  RegexparamResult
-} from './types'
 import regexparam from 'regexparam'
-import { RouterError } from './error'
-import {
-  addTrailingSlash,
-  formatPath,
-  getPathHash,
-  getPathParams,
-  getPathQuery,
-  isCatchAllPath,
-  joinPaths,
-  removeHashAndQuery
-} from './util'
+import { addTrailingSlash, formatPath, joinPaths } from './util'
+import { RouteRecord } from './types'
+
+export interface MatchedRoute {
+  /** The current path, e.g. "/foo/bar" */
+  path: string
+  /**
+   * Key-value pairs of route named parameters (denoted with ":") and wildcard
+   * parameters (denoted with "*"). Access wildcard values with the 'wild' key.
+   */
+  params: Record<string, string>
+  /** Array of all matched route records for this path */
+  matched: RouteRecord[]
+}
 
 interface RouteMatchData {
   /** The current formatted path */
   path: string
+  pattern: RegExp
+  keys: string[]
   /** Array of all matched routes for this path */
   matched: RouteRecord[]
-  /** Un-formatted redirect path */
-  redirect?: RedirectOption
-  /** Pre-computed regexparam result */
-  rpResult: RegexparamResult
 }
 
 /** Metadata used on route parent when traversing routes in buildDatas */
@@ -38,59 +33,32 @@ export class RouteMatcher {
     this.buildDatas(routes)
   }
 
-  /**
-   * Finds a route based on target path and the computed matchers. If matched
-   * route has a redirect, it will recursively match until a route (without
-   * redirects) is found.
-   *
-   * @param visitedPaths Array of route paths that have been previously visited.
-   *   Used to prevent infinite redirects.
-   *
-   * @throws {RouterError} If infinite redirect loop encountered
-   */
-  matchRoute(path: string, visitedPaths: string[] = []): Route {
-    const routePath = formatPath(removeHashAndQuery(path))
+  /** Finds a route based on target path and the computed matchers. */
+  matchRoute(path: string): MatchedRoute | undefined {
     // Add trailing slash to route path so it properly matches nested routes too.
     // e.g. /foo should match /foo/*
-    const matchPath = addTrailingSlash(routePath)
-
-    // Check infinite redirect loop
-    // NOTE: This won't 100% prevent infinite loops since different paths may
-    // match the same route record (e.g. named param route and wildcard route).
-    // We can only confirm an infinite loop happens when a path matches exactly
-    // as a previously recorded one.
-    if (visitedPaths.includes(routePath)) {
-      // Push current path to be used for error printing
-      visitedPaths.push(routePath)
-
-      const loopStr = visitedPaths.map((v) => `"${v}"`).join(' -> ')
-
-      throw new RouterError(`Infinite redirect loop encountered: ${loopStr}`)
-    }
-
-    // Add self as visited to prevent next redirect loop
-    visitedPaths.push(routePath)
+    const matchPath = addTrailingSlash(path)
 
     for (const matchData of this.matchDatas) {
-      if (matchData.rpResult.pattern.test(matchPath)) {
-        if (matchData.redirect != null) {
-          let redirectPath = matchData.redirect
+      const params: Record<string, string> = {}
+      const matchResult = matchPath.match(matchData.pattern)
 
-          if (typeof redirectPath === 'function') {
-            const to = this.matchDataToRoute(path, matchData)
-            redirectPath = redirectPath(to)
-          }
+      if (matchResult) {
+        for (let i = 0; i < matchData.keys.length; i++) {
+          params[matchData.keys[i]] = matchResult[i + 1]
+        }
 
-          return this.matchRoute(redirectPath, visitedPaths)
-        } else {
-          // Use path instead of routePath because it may contain query and hash data
-          return this.matchDataToRoute(path, matchData)
+        if ('wild' in params) {
+          params.wild = formatPath(params.wild)
+        }
+
+        return {
+          path,
+          params,
+          matched: matchData.matched
         }
       }
     }
-
-    // This should never be reached since a default catch-all route is present
-    throw new RouterError(`No route found for "${routePath}"`)
   }
 
   /**
@@ -102,50 +70,21 @@ export class RouteMatcher {
     routes: RouteRecord[],
     parentData: RouteMatchParent = { path: '', matched: [] }
   ) {
-    // Whether one of the children is a catch-all route
-    let hasCatchAll = false
-
     routes.forEach((route) => {
-      // Check if is catch-all route
-      const isCatchAll = isCatchAllPath(route.path)
-
-      // Standardize catch-all syntax so it generates proper regex
-      const routePath = isCatchAll ? '/*' : route.path
-
       // Cumulative metadata when traversing parents
       const parent: RouteMatchParent = {
-        path: joinPaths(parentData.path, routePath),
+        path: joinPaths(parentData.path, route.path),
         matched: parentData.matched.concat(route)
       }
 
-      if (isCatchAll) {
-        hasCatchAll = true
-      }
-
-      // Ignore children is is catch-all route
-      if (!isCatchAll && route.children != null && route.children.length > 0) {
+      if (route.children?.length) {
         this.buildDatas(route.children, parent)
       } else {
         this.matchDatas.push({
           ...parent,
-          redirect: route.redirect,
-          rpResult: regexparam(parent.path)
+          ...regexparam(parent.path)
         })
       }
     })
-  }
-
-  /** Converts a route matcher to route object based on path given */
-  private matchDataToRoute(path: string, matchData: RouteMatchData): Route {
-    const routePath = formatPath(removeHashAndQuery(path))
-
-    return {
-      path: routePath,
-      fullPath: path,
-      matched: matchData.matched,
-      params: getPathParams(path, matchData.rpResult),
-      query: getPathQuery(path),
-      hash: getPathHash(path)
-    }
   }
 }

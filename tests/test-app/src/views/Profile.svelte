@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { link, route, RouterView } from '../package'
+  import { link, route } from '../package'
 
-  let id: string
   $: id = $route.params.id
 </script>
 
@@ -13,4 +12,4 @@
   <a use:link href="/profile/{id}/bio">Bio</a>
 </div>
 
-<RouterView />
+<slot />
