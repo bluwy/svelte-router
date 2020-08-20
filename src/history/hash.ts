@@ -36,17 +36,17 @@ export class HashHistory implements RouterHistory {
   private createHref(to: LocationInput) {
     const url = new URL(window.location.href)
 
+    if (to.hash) {
+      url.hash = to.hash
+    }
+
     if (to.path) {
       url.hash = '#' + to.path
     }
 
-    if (to.search) {
-      url.search = '?' + new URLSearchParams(to.search).toString()
-    }
-
-    if (to.hash) {
-      url.hash = to.hash
-    }
+    url.search = to.search
+      ? '?' + new URLSearchParams(to.search).toString()
+      : ''
 
     return url.toString()
   }

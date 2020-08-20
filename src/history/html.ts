@@ -41,13 +41,11 @@ export class HtmlHistory implements RouterHistory {
       url.pathname = joinPaths(basePath, to.path)
     }
 
-    if (to.search) {
-      url.search = '?' + new URLSearchParams(to.search).toString()
-    }
+    url.search = to.search
+      ? '?' + new URLSearchParams(to.search).toString()
+      : ''
 
-    if (to.hash) {
-      url.hash = to.hash
-    }
+    url.hash = to.hash || ''
 
     return url.toString()
   }
