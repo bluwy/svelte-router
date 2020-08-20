@@ -2,7 +2,7 @@
   import type { RouteRecord } from './types'
   import { route } from './router'
   import { navigate } from './navigate'
-  import { handlePromisable } from './util'
+  import { handleThunk, handlePromisable } from './util'
 
   export let nextMatched: RouteRecord[] | undefined = undefined
 
@@ -13,16 +13,13 @@
   $: if (redirect != null) {
     canRender = false
 
-    handlePromisable(
-      typeof redirect === 'function' ? redirect() : redirect,
-      (result) => {
-        if (result != null) {
-          navigate(result, true)
-        } else {
-          canRender = true
-        }
+    handlePromisable(handleThunk(redirect), (result) => {
+      if (result != null) {
+        navigate(result, true)
+      } else {
+        canRender = true
       }
-    )
+    })
   }
 </script>
 

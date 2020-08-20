@@ -1,4 +1,4 @@
-import { Promisable } from './types'
+import { Thunk, Promisable } from './types'
 
 /** Makes sure path has leading "/" and no trailing "/" */
 export function formatPath(path: string) {
@@ -26,6 +26,10 @@ export function addTrailingSlash(path: string) {
   }
 
   return path
+}
+
+export function handleThunk<T>(thunk: Thunk<T>): T {
+  return typeof thunk === 'function' ? (thunk as any)() : thunk
 }
 
 export function handlePromisable<T>(
