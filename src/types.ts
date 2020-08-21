@@ -2,6 +2,8 @@ export type Thunk<T> = T | (() => T)
 
 export type Promisable<T> = T | Promise<T>
 
+export type RouterMode = 'hash' | 'history'
+
 export interface LocationInput {
   path?: string
   search?: ConstructorParameters<typeof URLSearchParams>[0]

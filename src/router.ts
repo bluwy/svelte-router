@@ -1,19 +1,21 @@
 import { derived, Readable } from 'svelte/store'
 import { RouterHistory, LocationData } from './history/base'
-import { HtmlHistory } from './history/html'
 import { HashHistory } from './history/hash'
+import { HtmlHistory } from './history/html'
 import { RouteMatcher, MatchedRoute } from './matcher'
-import { RouteRecord } from './types'
+import { RouteRecord, RouterMode } from './types'
 
 export type Route = MatchedRoute & LocationData
 
 export interface RouterOptions {
   /** The routing mode: "hash" or "history". Default: "hash" */
-  mode?: 'hash' | 'history'
+  mode?: RouterMode
   routes?: RouteRecord[]
 }
 
 let inited = false
+
+export let routerMode: RouterMode
 
 export let routerHistory: RouterHistory
 
@@ -23,12 +25,14 @@ export function initRouter(options: RouterOptions) {
   if (!inited) {
     inited = true
 
-    switch (options.mode) {
+    routerMode = options.mode ?? 'hash'
+
+    switch (routerMode) {
+      case 'hash':
+        routerHistory = new HashHistory()
+        break
       case 'history':
         routerHistory = new HtmlHistory()
-        break
-      default:
-        routerHistory = new HashHistory()
         break
     }
 

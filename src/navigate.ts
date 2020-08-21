@@ -1,5 +1,10 @@
 import { LocationInput } from './types'
-import { routerHistory } from './router'
+import { route, routerMode, routerHistory } from './router'
+
+let routeParams: Record<string, string> = {}
+route.subscribe(($route) => {
+  routeParams = $route.params
+})
 
 export function navigate(to: number): void
 export function navigate(to: string | LocationInput, replace?: boolean): void
@@ -21,9 +26,22 @@ export function navigate(to: number | string | LocationInput, replace = false) {
     to = { path, search, hash }
   }
 
+  if (to.path) {
+    to.path = substitutePathParams(to.path)
+  }
+
+  if (routerMode === 'hash' && to.hash) {
+    to.hash = substitutePathParams(to.hash)
+  }
+
   if (replace) {
     routerHistory.replace(to)
   } else {
     routerHistory.push(to)
   }
+}
+
+/** Replace named param in path, e.g. `/foo/:id` => `/foo/123` */
+function substitutePathParams(path: string) {
+  return path.replace(/:([^/]+)/g, (o, v) => routeParams[v] ?? o)
 }
