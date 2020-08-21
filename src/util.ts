@@ -13,6 +13,7 @@ export function formatPath(path: string) {
   return path
 }
 
+/** Joins multiple path and also formats it */
 export function joinPaths(...paths: string[]) {
   return paths
     .map(formatPath)
@@ -43,6 +44,7 @@ export function handlePromisable<T>(
   }
 }
 
+/** Attribute is true only if it's not null and value not "false" */
 export function isAttributeTrue(el: Element, attrName: string) {
   const attr = el.getAttribute(attrName)
   return attr != null && attr !== 'false'

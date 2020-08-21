@@ -62,9 +62,8 @@ export class RouteMatcher {
   }
 
   /**
-   * Convert the routes as matchers that contains information used in path
-   * matching. This will recursively traverse child routes and flatten to a list
-   * of matchers.
+   * Convert the routes as datas that contains information for path matching.
+   * This will recursively traverse child routes and flatten into `matchDatas`.
    */
   private buildDatas(
     routes: RouteRecord[],

@@ -19,8 +19,10 @@ export let routerMode: RouterMode
 
 export let routerHistory: RouterHistory
 
+/** The current route information */
 export let route: Readable<Route>
 
+/** Initialize the global router. Call this before mounting the app. */
 export function initRouter(options: RouterOptions) {
   if (!inited) {
     inited = true
