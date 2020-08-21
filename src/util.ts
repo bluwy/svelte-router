@@ -42,3 +42,8 @@ export function handlePromisable<T>(
     callback(promisable)
   }
 }
+
+export function isAttributeTrue(el: Element, attrName: string) {
+  const attr = el.getAttribute(attrName)
+  return attr != null && attr !== 'false'
+}

@@ -1,4 +1,5 @@
 import { navigate } from './navigate'
+import { isAttributeTrue } from './util'
 
 /**
  * Use this action on an anchor tag to automatically handle router navigation.
@@ -36,12 +37,13 @@ function handleClick(e: MouseEvent) {
   if (a != null) {
     const href = a.getAttribute('href')
 
-    if (href?.startsWith('/') && !a.getAttribute('noroute')) {
+    if (
+      href != null &&
+      (href.startsWith('/') || href.startsWith('?') || href.startsWith('#')) &&
+      !isAttributeTrue(a, 'noroute')
+    ) {
       e.preventDefault()
-
-      const replace = a.getAttribute('replace')
-
-      navigate(href, replace != null && replace !== 'false')
+      navigate(href, isAttributeTrue(a, 'replace'))
     }
   }
 }
