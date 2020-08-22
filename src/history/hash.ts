@@ -39,15 +39,15 @@ export class HashHistory implements RouterHistory {
   private createHref(to: LocationInput) {
     const url = new URL(window.location.href)
 
-    if (to.hash) {
+    if (to.hash != null) {
       url.hash = to.hash
     }
 
-    if (to.path) {
+    if (to.path != null) {
       url.hash = '#' + to.path
     }
 
-    url.search = to.search
+    url.search = to.search != null
       ? '?' + new URLSearchParams(to.search).toString()
       : ''
 

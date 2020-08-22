@@ -40,15 +40,15 @@ export class HtmlHistory implements RouterHistory {
   private createHref(to: LocationInput) {
     const url = new URL(window.location.href)
 
-    if (to.path) {
+    if (to.path != null) {
       url.pathname = joinPaths(basePath, to.path)
     }
 
-    url.search = to.search
+    url.search = to.search != null
       ? '?' + new URLSearchParams(to.search).toString()
       : ''
 
-    url.hash = to.hash || ''
+    url.hash = to.hash ?? ''
 
     return url.toString()
   }
