@@ -19,6 +19,12 @@ async function main() {
     path.resolve(cwd, 'src/RouterView.svelte'),
     path.resolve(cwd, 'dist/RouterView.svelte')
   )
+
+  // Copy Link component
+  await preprocessSvelte(
+    path.resolve(cwd, 'src/Link.svelte'),
+    path.resolve(cwd, 'dist/Link.svelte')
+  )
 }
 
 async function preprocessSvelte(src, dest) {
