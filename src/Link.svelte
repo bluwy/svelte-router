@@ -48,15 +48,15 @@
   $: isActive = formattedPath && $route.path.startsWith(formattedPath)
 
   // Exact path match
-  $: isActiveExact = $route.path === formattedPath
+  $: isExactActive = $route.path === formattedPath
 </script>
 
 <a
   {...$$restProps}
-  class:active={isActive}
-  class:active-exact={isActiveExact}
+  class:link-active={isActive}
+  class:link-exact-active={isExactActive}
   {href}
-  aria-current={isActiveExact ? 'page' : undefined}
+  aria-current={isExactActive ? 'page' : undefined}
   on:click|preventDefault={() => navigate(to, replace)}
 >
   <slot />
