@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { link, route } from '../package'
+  import { link, route, Link } from '../package'
 
   $: id = $route.params.id
 </script>
@@ -8,8 +8,8 @@
 <p>Your ID is {id}</p>
 
 <div>
-  <a use:link href="/profile/{id}/welcome">Welcome</a>
-  <a use:link href="/profile/{id}/bio">Bio</a>
+  <Link to="/profile/:id/welcome">Welcome</Link>
+  <a use:link href="/profile/:id/bio">Bio</a>
 </div>
 
 <slot />
