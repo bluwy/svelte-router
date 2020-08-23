@@ -1,6 +1,7 @@
 import { LocationInput } from './types'
-import { routerHistory } from './router'
-import { parseLocationInput, replaceLocationInputParams } from './util'
+import { route, routerMode, routerHistory } from './router'
+
+let routeParams: Record<string, string> = undefined!
 
 /**
  * Navigate using an offset in the current history. Works the same way as
@@ -42,4 +43,41 @@ export function navigate(to: number | string | LocationInput, replace = false) {
   } else {
     routerHistory.push(to)
   }
+}
+
+/** Replace named param in path, e.g. `/foo/:id` => `/foo/123` */
+export function replacePathParams(path: string) {
+  if (routeParams == null) {
+    route.subscribe(($route) => {
+      routeParams = $route.params
+    })
+  }
+
+  return path.replace(/:([^/]+)/g, (o, v) => routeParams[v] ?? o)
+}
+
+export function replaceLocationInputParams(input: LocationInput) {
+  const newInput = { ...input }
+
+  if (newInput.path) {
+    newInput.path = replacePathParams(newInput.path)
+  }
+
+  if (routerMode === 'hash' && newInput.hash) {
+    newInput.hash = replacePathParams(newInput.hash)
+  }
+
+  return newInput
+}
+
+export function parseLocationInput(to: string): LocationInput {
+  const url = new URL(to, 'https://example.com')
+
+  const hasPath = to.length > 0 && !to.startsWith('?') && !to.startsWith('#')
+
+  const path = hasPath ? url.pathname : undefined
+  const search = url.search !== '' ? url.search : undefined
+  const hash = url.hash !== '' ? url.hash : undefined
+
+  return { path, search, hash }
 }

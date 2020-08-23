@@ -3,12 +3,8 @@
   import { navigate } from './navigate'
   import { routerMode, route } from './router'
   import type { LocationInput } from './types'
-  import {
-    parseLocationInput,
-    replaceLocationInputParams,
-    joinPaths,
-    formatPath
-  } from './util'
+  import { parseLocationInput, replaceLocationInputParams } from './navigate'
+  import { joinPaths, formatPath } from './util'
 
   export let to: string | LocationInput
   export let replace = false

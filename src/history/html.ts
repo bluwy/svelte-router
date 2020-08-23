@@ -44,9 +44,8 @@ export class HtmlHistory implements RouterHistory {
       url.pathname = joinPaths(basePath, to.path)
     }
 
-    url.search = to.search != null
-      ? '?' + new URLSearchParams(to.search).toString()
-      : ''
+    url.search =
+      to.search != null ? '?' + new URLSearchParams(to.search).toString() : ''
 
     url.hash = to.hash ?? ''
 

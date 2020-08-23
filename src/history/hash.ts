@@ -47,9 +47,8 @@ export class HashHistory implements RouterHistory {
       url.hash = '#' + to.path
     }
 
-    url.search = to.search != null
-      ? '?' + new URLSearchParams(to.search).toString()
-      : ''
+    url.search =
+      to.search != null ? '?' + new URLSearchParams(to.search).toString() : ''
 
     return url.toString()
   }
