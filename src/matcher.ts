@@ -85,5 +85,17 @@ export class RouteMatcher {
         })
       }
     })
+
+    // Make sure "/" doesn't fall through if the routes' paths do.
+    // Example route config:
+    // "/foo"
+    // - "/bar"
+    // match('/foo') should render "/foo" component but with empty child
+    if (!routes.some(route => ['', '/', '*', '/*'].includes(route.path))) {
+      this.matchDatas.push({
+        ...parentData,
+        ...regexparam(parentData.path)
+      })
+    }
   }
 }
