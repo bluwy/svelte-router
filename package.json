@@ -1,7 +1,7 @@
 {
   "name": "@bjornlu/svelte-router",
-  "description": "Simple vue-like router",
-  "version": "1.0.0",
+  "description": "Simple router for Svelte",
+  "version": "0.1.0",
   "main": "dist/svelte-router.umd.js",
   "module": "dist/index.js",
   "svelte": "dist/index.js",
@@ -15,6 +15,14 @@
     "url": "https://bjornlu.com"
   },
   "license": "MIT",
+  "homepage": "https://github.com/bluwy/svelte-router",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bluwy/svelte-router.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bluwy/svelte-router/issues"
+  },
   "keywords": [
     "svelte",
     "router"
