@@ -6,7 +6,8 @@ import ProfileBio from './views/ProfileBio.svelte'
 import Null from './views/Null.svelte'
 
 initRouter({
-  mode: 'history',
+  // Mode replaced by rollup
+  mode: __ROUTER_MODE__,
   routes: [
     {
       path: '/home',

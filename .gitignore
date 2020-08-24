@@ -1,4 +1,5 @@
 node_modules
 dist
-tests/test-app/public/build
+tests/test-app/public-history/build
+tests/test-app/public-hash/build
 .vscode

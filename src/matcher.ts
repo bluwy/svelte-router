@@ -91,7 +91,7 @@ export class RouteMatcher {
     // "/foo"
     // - "/bar"
     // match('/foo') should render "/foo" component but with empty child
-    if (!routes.some(route => ['', '/', '*', '/*'].includes(route.path))) {
+    if (!routes.some((route) => ['', '/', '*', '/*'].includes(route.path))) {
       this.matchDatas.push({
         ...parentData,
         ...regexparam(parentData.path)
