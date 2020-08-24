@@ -25,9 +25,13 @@
 </script>
 
 {#if !redirect || canRender}
-  <svelte:component this={component}>
-    {#if matched.length > 1}
-      <svelte:self nextMatched={matched.slice(1)} />
-    {/if}
-  </svelte:component>
+  {#if component != null}
+    <svelte:component this={component}>
+      {#if matched.length > 1}
+        <svelte:self nextMatched={matched.slice(1)} />
+      {/if}
+    </svelte:component>
+  {:else if matched.length > 1}
+    <svelte:self nextMatched={matched.slice(1)} />
+  {/if}
 {/if}
