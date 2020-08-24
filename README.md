@@ -190,7 +190,7 @@ Svelte Router exports a readable store `route` that contains the current route's
 
 ### Advanced usage
 
-> Check out the [Recipes](./Recipes.md) section for more advanced use-cases and solutions.
+Check out the [recipes](./Recipes.md) section for more advanced use-cases and solutions.
 
 ## Contributing
 
