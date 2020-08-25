@@ -11,7 +11,10 @@
   </div>
   <div>
     <input id="profile-id" type="text" bind:value={profileId} />
-    <button id="profile-button" on:click={() => navigate(`/profile/${profileId}/welcome`)}>
+    <button
+      id="profile-button"
+      on:click={() => navigate(`/profile/${profileId}/welcome`)}
+    >
       Login
     </button>
   </div>

@@ -1,5 +1,6 @@
 # Svelte Router
 
+<!-- prettier-ignore -->
 [![package version](https://img.shields.io/npm/v/@bjornlu/svelte-router)](https://www.npmjs.com/package/@bjornlu/svelte-router)
 [![npm downloads](https://img.shields.io/npm/dm/@bjornlu/svelte-router)](https://www.npmjs.com/package/@bjornlu/svelte-router)
 [![bundle size](https://img.shields.io/bundlephobia/minzip/@bjornlu/svelte-router)](https://bundlephobia.com/result?p=@bjornlu/svelte-router)
