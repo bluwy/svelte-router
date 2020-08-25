@@ -7,6 +7,7 @@
   export let nextMatched: RouteRecord[] | undefined = undefined
 
   $: matched = nextMatched ?? $route.matched
+  $: hasChildren = matched.length > 1
   $: component = matched[0]?.component
   $: redirect = matched[0]?.redirect
 
@@ -26,12 +27,14 @@
 
 {#if !redirect || canRender}
   {#if component != null}
-    <svelte:component this={component}>
-      {#if matched.length > 1}
+    {#if hasChildren}
+      <svelte:component this={component}>
         <svelte:self nextMatched={matched.slice(1)} />
-      {/if}
-    </svelte:component>
-  {:else if matched.length > 1}
+      </svelte:component>
+    {:else}
+      <svelte:component this={component} />
+    {/if}
+  {:else if hasChildren}
     <svelte:self nextMatched={matched.slice(1)} />
   {/if}
 {/if}
