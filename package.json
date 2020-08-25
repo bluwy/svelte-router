@@ -35,10 +35,11 @@
     "build:bundle": "rollup -c",
     "test": "yarn test:unit && yarn test:e2e",
     "test:unit": "TS_NODE_PROJECT=./tests/tsconfig.json mocha",
-    "test:e2e": "server-test 'yarn cy:setup' '10001|10002' 'yarn cy:run'",
+    "test:e2e": "server-test 'yarn cy:setup' '10001|10002' 'yarn cy:run --record'",
     "cy:setup": "rollup -c tests/test-app/rollup.config.js",
     "cy:open": "cypress open",
-    "cy:run": "cypress run --headless",
+    "cy:run": "cypress run --headless --record",
+    "lint": "prettier --check '**/*.{js,ts,svelte,md}'",
     "format": "prettier --write '**/*.{js,ts,svelte,md}'",
     "prepublishOnly": "yarn clean && yarn build"
   },

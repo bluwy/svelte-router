@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  unit-test:
+  test:
     name: Unit test
     runs-on: ubuntu-latest
     steps:
@@ -18,6 +18,9 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
 
       - name: Test
         run: yarn test:unit
