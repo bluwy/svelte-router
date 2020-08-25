@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   test:
-    name: Unit test
+    name: Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,5 +22,11 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Test
+      - name: Unit test
         run: yarn test:unit
+
+      - name: End-to-end test
+        if: github.event_name == 'push'
+        run: yarn test:e2e
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}

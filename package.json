@@ -38,7 +38,7 @@
     "test:e2e": "server-test 'yarn cy:setup' '10001|10002' 'yarn cy:run --record'",
     "cy:setup": "rollup -c tests/test-app/rollup.config.js",
     "cy:open": "cypress open",
-    "cy:run": "cypress run --headless --record",
+    "cy:run": "cypress run --headless",
     "lint": "prettier --check '**/*.{js,ts,svelte,md}'",
     "format": "prettier --write '**/*.{js,ts,svelte,md}'",
     "prepublishOnly": "yarn clean && yarn build"
