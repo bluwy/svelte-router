@@ -1,4 +1,4 @@
-describe('hash router', { baseUrl: 'http://localhost:10002' }, () => {
+describe('hash router', { baseUrl: 'http://localhost:10001' }, () => {
   it('should change hash on route change', () => {
     cy.visit('#/')
     cy.get('a').contains('Home').click()
