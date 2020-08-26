@@ -30,7 +30,7 @@ export function navigate(to: number | string | LocationInput, replace = false) {
     // TODO: Show warning if called before initRouter?
     return
   }
-  
+
   if (typeof to === 'number') {
     routerHistory.go(to)
     return

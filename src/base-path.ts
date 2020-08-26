@@ -1,4 +1,4 @@
 export const basePath =
-  document.baseURI !== window.location.href
+  document.getElementsByTagName('base').length > 0
     ? document.baseURI.replace(window.location.origin, '')
     : '/'
