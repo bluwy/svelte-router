@@ -6,6 +6,7 @@
 - [Redirects and navigation guard](#redirects-and-navigation-guard)
 - [Dynamic import](#dynamic-import)
 - [Route transitions](#route-transitions)
+- [Access API before router initialization](#access-api-before-router-initialization)
 
 ## Param shorthand paths
 
@@ -82,3 +83,19 @@ Route components can use [svelte/transition](https://svelte.dev/docs#svelte_tran
   Content
 </div>
 ```
+
+## Access API before router initialization
+
+In cases where the API such as `route` and `navigate` need to be accessed before `initRouter`,the `route` store will have a default value of:
+
+```js
+{
+  path: '',
+  params: {},
+  matched: [],
+  search: new URLSearchParams(),
+  hash: ''
+}
+```
+
+While `navigate` will not trigger any navigation at all.
