@@ -3,7 +3,7 @@ describe('hash router', { baseUrl: 'http://localhost:10001' }, () => {
     cy.visit('#/')
     cy.get('h2').contains('Home').should('exist')
   })
-  
+
   it('should change hash on route change', () => {
     cy.visit('#/')
     cy.get('a').contains('Null').click()

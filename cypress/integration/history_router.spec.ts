@@ -3,7 +3,7 @@ describe('history router', { baseUrl: 'http://localhost:10002' }, () => {
     cy.visit('/')
     cy.get('h2').contains('Home').should('exist')
   })
-  
+
   it('should change pathname on route change', () => {
     cy.visit('/')
     cy.get('a').contains('Null').click()
