@@ -26,7 +26,14 @@ jobs:
         run: yarn test:unit
 
       - name: End-to-end test
+        uses: cypress-io/github-action@v2
         if: github.event_name == 'push'
-        run: yarn test:e2e
+        with:
+          headless: true
+          record: true
+          start: yarn cy:setup
+          wait-on: 'http://localhost:10003'
+          install: false
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
