@@ -1,9 +1,14 @@
 describe('hash router', { baseUrl: 'http://localhost:10001' }, () => {
+  it('should render initial route', () => {
+    cy.visit('#/')
+    cy.get('h2').contains('Home').should('exist')
+  })
+  
   it('should change hash on route change', () => {
     cy.visit('#/')
-    cy.get('a').contains('Home').click()
-    cy.hash().should('eq', '#/home')
-    cy.get('h2').contains('Home').should('exist')
+    cy.get('a').contains('Null').click()
+    cy.hash().should('eq', '#/null')
+    cy.get('h2').contains('404').should('exist')
   })
 
   it('should handle nested routes', () => {
@@ -36,7 +41,7 @@ describe('hash router', { baseUrl: 'http://localhost:10001' }, () => {
 
   it('should redirect', () => {
     cy.visit('#/secret')
-    cy.hash().should('eq', '#/home')
+    cy.hash().should('eq', '#/')
   })
 
   it('should not redirect if undefined', () => {

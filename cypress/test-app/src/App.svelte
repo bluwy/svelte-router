@@ -6,7 +6,7 @@
 
 <div>
   <div use:link>
-    <a href="/home">Home</a>
+    <a href="/">Home</a>
     <a href="/null">Null</a>
   </div>
   <div>

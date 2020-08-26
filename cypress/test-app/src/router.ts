@@ -10,7 +10,7 @@ initRouter({
   mode: __ROUTER_MODE__,
   routes: [
     {
-      path: '/home',
+      path: '/',
       component: Home
     },
     {
@@ -26,9 +26,7 @@ initRouter({
           component: ProfileBio,
           redirect: () =>
             new Promise((resolve) => {
-              setTimeout(() => {
-                resolve(undefined)
-              }, 1000)
+              setTimeout(() => resolve(undefined), 1000)
             })
         }
       ]
@@ -37,9 +35,7 @@ initRouter({
       path: '/secret',
       redirect: () =>
         new Promise((resolve) => {
-          setTimeout(() => {
-            resolve('/home')
-          }, 1000)
+          setTimeout(() => resolve('/'), 1000)
         })
     },
     {

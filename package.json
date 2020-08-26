@@ -35,7 +35,7 @@
     "build:bundle": "rollup -c",
     "test": "yarn test:unit && yarn test:e2e",
     "test:unit": "jest",
-    "test:e2e": "server-test 'yarn cy:setup' '10001|10002' 'yarn cy:run --record'",
+    "test:e2e": "server-test 'yarn cy:setup' '10001|10002|10003' 'yarn cy:run'",
     "cy:setup": "rollup -c cypress/test-app/rollup.config.js",
     "cy:open": "cypress open",
     "cy:run": "cypress run --headless",

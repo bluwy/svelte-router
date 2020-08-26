@@ -1,9 +1,14 @@
 describe('history base router', { baseUrl: 'http://localhost:10003' }, () => {
+  it('should render initial route', () => {
+    cy.visit('/test')
+    cy.get('h2').contains('Home').should('exist')
+  })
+  
   it('should change pathname on route change', () => {
     cy.visit('/test')
-    cy.get('a').contains('Home').click()
-    cy.location('pathname').should('eq', '/test/home')
-    cy.get('h2').contains('Home').should('exist')
+    cy.get('a').contains('Null').click()
+    cy.location('pathname').should('eq', '/test/null')
+    cy.get('h2').contains('404').should('exist')
   })
 
   it('should handle nested routes', () => {
@@ -36,7 +41,7 @@ describe('history base router', { baseUrl: 'http://localhost:10003' }, () => {
 
   it('should redirect', () => {
     cy.visit('/test/secret')
-    cy.location('pathname').should('eq', '/test/home')
+    cy.location('pathname').should('eq', '/test')
   })
 
   it('should not redirect if undefined', () => {
