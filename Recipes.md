@@ -63,7 +63,7 @@ const Chunk = ChunkGenerator(ChunkComponent)
 initRouter({
   routes: [
     {
-      path: '/home',
+      path: '/',
       component: Chunk(() => import('./Home.svelte'))
     }
   ]

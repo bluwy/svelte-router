@@ -54,7 +54,7 @@ initRouter({
   mode: 'history',
   routes: [
     {
-      path: '/home',
+      path: '/',
       component: Home
     },
     {
@@ -76,7 +76,7 @@ initRouter({
       // Redirect to a new path if this route is matched.
       // Also accepts a function that returns a string, and may be asynchronous.
       // Learn more in the Recipes section.
-      redirect: '/home'
+      redirect: '/'
     },
     {
       path: '/*',
