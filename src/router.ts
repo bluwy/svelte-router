@@ -1,4 +1,4 @@
-import { derived, Readable } from 'svelte/store'
+import { writable, Readable } from 'svelte/store'
 import { RouterHistory, LocationData } from './history/base'
 import { HashHistory } from './history/hash'
 import { HtmlHistory } from './history/html'
@@ -13,20 +13,25 @@ export interface RouterOptions {
   routes?: RouteRecord[]
 }
 
-let inited = false
+export let routerMode: RouterMode | undefined
 
-export let routerMode: RouterMode
+export let routerHistory: RouterHistory | undefined
 
-export let routerHistory: RouterHistory
+const writableRoute = writable<Route>({
+  path: '',
+  params: {},
+  matched: [],
+  search: new URLSearchParams(),
+  hash: ''
+})
 
 /** The current route information */
-export let route: Readable<Route>
+export const route: Readable<Route> = { subscribe: writableRoute.subscribe }
 
 /** Initialize the global router. Call this before mounting the app. */
 export function initRouter(options: RouterOptions) {
-  if (!inited) {
-    inited = true
-
+  // Use `routerMode` to check if router is already initialized
+  if (routerMode == null) {
     routerMode = options.mode ?? 'hash'
 
     switch (routerMode) {
@@ -40,14 +45,14 @@ export function initRouter(options: RouterOptions) {
 
     const matcher = new RouteMatcher(options.routes)
 
-    route = derived(routerHistory.currentLocation, ($currentLocation) => {
+    routerHistory.currentLocation.subscribe(($currentLocation) => {
       const matchedRoute = matcher.matchRoute($currentLocation.path)
 
-      return {
+      writableRoute.set({
         ...$currentLocation,
         params: matchedRoute?.params ?? {},
         matched: matchedRoute?.matched ?? []
-      }
+      })
     })
   }
 }

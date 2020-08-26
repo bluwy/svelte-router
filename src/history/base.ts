@@ -15,7 +15,7 @@ export interface RouterHistory {
 }
 
 export const DUMMY_LOCATION: LocationData = {
-  path: '/',
+  path: '',
   search: new URLSearchParams(),
   hash: ''
 }

@@ -26,6 +26,11 @@ export function navigate(to: number): void
  */
 export function navigate(to: string | LocationInput, replace?: boolean): void
 export function navigate(to: number | string | LocationInput, replace = false) {
+  if (routerHistory == null) {
+    // TODO: Show warning if called before initRouter?
+    return
+  }
+  
   if (typeof to === 'number') {
     routerHistory.go(to)
     return
