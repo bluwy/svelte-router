@@ -10,14 +10,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup NodeJS
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12
-          registry-url: https://registry.npmjs.org/
-
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        uses: cypress-io/github-action@v2
+        with:
+          runTests: false
 
       - name: Lint
         run: yarn lint
