@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { tick } from 'svelte'
   import type { RouteRecord } from './types'
   import { route } from './router'
   import { navigate } from './navigate'
@@ -17,7 +18,7 @@
 
     handlePromisable(handleThunk(redirect), (result) => {
       if (result != null) {
-        navigate(result, true)
+        tick().then(() => navigate(result, true))
       } else {
         canRender = true
       }

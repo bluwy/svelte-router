@@ -33,10 +33,7 @@ initRouter({
     },
     {
       path: '/secret',
-      redirect: () =>
-        new Promise((resolve) => {
-          setTimeout(() => resolve('/'), 1000)
-        })
+      redirect: '/'
     },
     {
       path: '/*',
