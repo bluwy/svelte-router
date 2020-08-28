@@ -1,4 +1,21 @@
-import { Thunk, Promisable } from './types'
+import { Thunk, Promisable, LocationInput } from './types'
+
+export const basePath =
+  document.getElementsByTagName('base').length > 0
+    ? document.baseURI.replace(window.location.origin, '')
+    : '/'
+
+export function parseLocationInput(to: string): LocationInput {
+  const url = new URL(to, 'https://example.com')
+
+  const hasPath = to.length > 0 && !to.startsWith('?') && !to.startsWith('#')
+
+  const path = hasPath ? url.pathname : undefined
+  const search = url.search !== '' ? url.search : undefined
+  const hash = url.hash !== '' ? url.hash : undefined
+
+  return { path, search, hash }
+}
 
 /** Makes sure path has leading "/" and no trailing "/" */
 export function formatPath(path: string) {
@@ -42,10 +59,4 @@ export function handlePromisable<T>(
   } else {
     callback(promisable)
   }
-}
-
-/** Attribute is true only if it's not null and value not "false" */
-export function isAttributeTrue(el: Element, attrName: string) {
-  const attr = el.getAttribute(attrName)
-  return attr != null && attr !== 'false'
 }

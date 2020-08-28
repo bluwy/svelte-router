@@ -1,8 +1,7 @@
 <script lang="ts">
   import { tick } from 'svelte'
   import type { RouteRecord } from './types'
-  import { route } from './router'
-  import { navigate } from './navigate'
+  import { route, navigate } from './global'
   import { handleThunk, handlePromisable } from './util'
 
   export let nextMatched: RouteRecord[] | undefined = undefined

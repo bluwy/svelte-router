@@ -27,7 +27,7 @@ interface RouteMatchData {
 type RouteMatchParent = Pick<RouteMatchData, 'path' | 'matched'>
 
 export class RouteMatcher {
-  private matchDatas: RouteMatchData[] = []
+  private readonly matchDatas: RouteMatchData[] = []
 
   constructor(routes: RouteRecord[] = []) {
     this.buildDatas(routes)

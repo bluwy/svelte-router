@@ -1,62 +1,19 @@
 <script lang="ts">
-  import { basePath } from './base-path'
-  import { navigate } from './navigate'
-  import { routerMode, route } from './router'
   import type { LocationInput } from './types'
-  import { parseLocationInput, replaceLocationInputParams } from './navigate'
-  import { joinPaths, formatPath } from './util'
+  import { createLink, navigate } from './global'
 
   export let to: string | LocationInput
   export let replace = false
 
-  $: input = typeof to === 'string' ? parseLocationInput(to) : to
-
-  $: parsedInput = replaceLocationInputParams(input)
-
-  // The input path only, no search and hash
-  let path: string | undefined
-  $: switch (routerMode) {
-    case 'hash':
-      path = parsedInput.path ?? parsedInput.hash?.slice(1)
-      break
-    case 'history':
-      path = parsedInput.path
-      break
-  }
-
-  $: formattedPath = path != null ? formatPath(path) : undefined
-
-  let href: string
-  $: {
-    const searchString = parsedInput.search?.toString()
-    const search = searchString ? '?' + searchString : ''
-
-    switch (routerMode) {
-      case 'hash':
-        href = search + (path != null ? '#' + path : '')
-        break
-      case 'history':
-        href = joinPaths(
-          basePath,
-          (path ?? '') + search + (parsedInput.hash ?? '')
-        )
-        break
-    }
-  }
-
-  // Partial path match
-  $: isActive = formattedPath && $route.path.startsWith(formattedPath)
-
-  // Exact path match
-  $: isExactActive = $route.path === formattedPath
+  $: link = createLink(to)
 </script>
 
 <a
   {...$$restProps}
-  class:link-active={isActive}
-  class:link-exact-active={isExactActive}
-  {href}
-  aria-current={isExactActive ? 'page' : undefined}
+  class:link-active={link.isActive}
+  class:link-exact-active={link.isExactActive}
+  href={link.href}
+  aria-current={link.isExactActive ? 'page' : undefined}
   on:click|preventDefault={() => navigate(to, replace)}
 >
   <slot />
