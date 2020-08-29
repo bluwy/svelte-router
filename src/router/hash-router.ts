@@ -7,6 +7,13 @@ export class HashRouter extends Router {
     return formatPath(window.location.hash.slice(1))
   }
 
+  getCurrentLocationInput(): LocationInput {
+    return {
+      hash: '#' + this.getCurrentPath(),
+      search: window.location.search
+    }
+  }
+
   getPath(to: LocationInput) {
     return to.path ?? to.hash?.slice(1)
   }
@@ -14,16 +21,15 @@ export class HashRouter extends Router {
   createUrl(to: LocationInput) {
     const url = new URL(window.location.href)
 
-    if (to.hash != null) {
-      url.hash = to.hash
-    }
-
-    if (to.path != null) {
+    if (to.path) {
       url.hash = '#' + to.path
+    } else {
+      url.hash = to.hash ?? ''
     }
 
-    url.search =
-      to.search != null ? '?' + new URLSearchParams(to.search).toString() : ''
+    url.search = to.search
+      ? '?' + new URLSearchParams(to.search).toString()
+      : ''
 
     return url.toString()
   }

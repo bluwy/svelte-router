@@ -7,6 +7,14 @@ export class PathRouter extends Router {
     return formatPath(window.location.pathname.replace(basePath, ''))
   }
 
+  getCurrentLocationInput(): LocationInput {
+    return {
+      path: this.getCurrentPath(),
+      hash: window.location.hash,
+      search: window.location.search
+    }
+  }
+
   getPath(to: LocationInput) {
     return to.path
   }
@@ -14,12 +22,13 @@ export class PathRouter extends Router {
   createUrl(to: LocationInput) {
     const url = new URL(window.location.href)
 
-    if (to.path != null) {
+    if (to.path) {
       url.pathname = joinPaths(basePath, to.path)
     }
 
-    url.search =
-      to.search != null ? '?' + new URLSearchParams(to.search).toString() : ''
+    url.search = to.search
+      ? '?' + new URLSearchParams(to.search).toString()
+      : ''
 
     url.hash = to.hash ?? ''
 

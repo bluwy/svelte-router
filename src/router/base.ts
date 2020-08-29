@@ -29,9 +29,13 @@ export abstract class Router {
 
       return () => window.removeEventListener(LOCATION_CHANGE, handleChange)
     })
+
+    // Format URL on page load
+    this.navigate(this.getCurrentLocationInput(), true)
   }
 
   protected abstract getCurrentPath(): string
+  protected abstract getCurrentLocationInput(): LocationInput
   protected abstract getPath(to: LocationInput): string | undefined
   protected abstract createUrl(to: LocationInput): string
   protected abstract createLinkHref(to: LocationInput): string

@@ -8,13 +8,11 @@ export const basePath =
 export function parseLocationInput(to: string): LocationInput {
   const url = new URL(to, 'https://example.com')
 
-  const hasPath = to.length > 0 && !to.startsWith('?') && !to.startsWith('#')
-
-  const path = hasPath ? url.pathname : undefined
-  const search = url.search !== '' ? url.search : undefined
-  const hash = url.hash !== '' ? url.hash : undefined
-
-  return { path, search, hash }
+  return {
+    path: to.startsWith('/') ? url.pathname : undefined,
+    search: url.search,
+    hash: url.hash
+  }
 }
 
 /** Makes sure path has leading "/" and no trailing "/" */
