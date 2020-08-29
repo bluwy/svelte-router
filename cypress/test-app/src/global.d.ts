@@ -1,1 +1,1 @@
-declare const __ROUTER_MODE__: 'history' | 'hash'
+declare const __ROUTER_MODE__: 'hash' | 'path'

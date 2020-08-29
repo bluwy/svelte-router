@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { link, navigate, RouterView } from './package'
+  import { navigate, RouterView, Link } from './package'
 
   let profileId = ''
 </script>
 
 <div>
-  <div use:link>
-    <a href="/">Home</a>
-    <a href="/null">Null</a>
+  <div>
+    <Link to="/">Home</Link>
+    <Link to="/null">Null</Link>
   </div>
   <div>
     <input id="profile-id" type="text" bind:value={profileId} />

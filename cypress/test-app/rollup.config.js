@@ -35,13 +35,13 @@ const createConfig = (routerMode, publicPath, port) => ({
     serve({
       contentBase: p(publicPath),
       port,
-      historyApiFallback: routerMode === 'history'
+      historyApiFallback: routerMode === 'path'
     })
   ]
 })
 
 export default [
   createConfig('hash', 'public-hash', 10001),
-  createConfig('history', 'public-history', 10002),
-  createConfig('history', 'public-history-base', 10003)
+  createConfig('path', 'public-path', 10002),
+  createConfig('path', 'public-path-base', 10003)
 ]
