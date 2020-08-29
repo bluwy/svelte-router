@@ -41,13 +41,15 @@ export function initRouter(options: RouterOptions) {
   switch (options.mode) {
     case 'hash':
       router = new HashRouter(options.routes)
+      break
     case 'path':
       router = new PathRouter(options.routes)
+      break
   }
 
-  navigate = router.navigate
+  navigate = router.navigate.bind(router)
 
-  createLink = router.createLink
+  createLink = router.createLink.bind(router)
 
   router.currentRoute.subscribe((v) => route.set(v))
 

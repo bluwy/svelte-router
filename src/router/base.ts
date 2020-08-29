@@ -83,7 +83,7 @@ export abstract class Router {
       to = parseLocationInput(to)
     }
 
-    const href = this.createLinkHref(to)
+    const href = this.createLinkHref(this.replaceParams(to))
     const path = this.getPath(to)
 
     if (path == null) {
