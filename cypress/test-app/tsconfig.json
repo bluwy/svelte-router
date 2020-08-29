@@ -1,9 +1,5 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "types": ["svelte"]
-  },
   "include": ["**/*.ts", "../../src"],
   "exclude": ["**/build"]
 }

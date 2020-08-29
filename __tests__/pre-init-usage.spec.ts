@@ -1,6 +1,5 @@
 import { get } from 'svelte/store'
-import { route } from '../src/router'
-import { navigate } from '../src/navigate'
+import { route, navigate, createLink } from '../src'
 
 describe('API access before router initialization', function () {
   it('should have a default route store value', function () {
@@ -8,8 +7,11 @@ describe('API access before router initialization', function () {
     expect(typeof $route === 'object').toBe(true)
   })
 
-  // TODO: Maybe actually throw but in dev mode?
-  it('should not throw error if navigate', function () {
-    expect(() => navigate(0)).not.toThrow()
+  it('should throw error if navigate', function () {
+    expect(() => navigate(0)).toThrow()
+  })
+
+  it('should throw error if createLink', function () {
+    expect(() => createLink({})).toThrow()
   })
 })
