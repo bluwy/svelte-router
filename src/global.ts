@@ -27,7 +27,15 @@ export const route = writable<Route>({
   hash: ''
 })
 
+let inited = false
+
 export function initRouter(options: RouterOptions) {
+  if (inited) {
+    throw new Error(
+      'Router is already initialized. Cannot re-initialize router.'
+    )
+  }
+
   let router: Router
 
   switch (options.mode) {
@@ -42,4 +50,6 @@ export function initRouter(options: RouterOptions) {
   createLink = router.createLink
 
   router.currentRoute.subscribe((v) => route.set(v))
+
+  inited = true
 }
