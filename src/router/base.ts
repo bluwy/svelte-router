@@ -47,7 +47,7 @@ export abstract class Router {
    */
   navigate(to: number): void
   /**
-   * Navigate using a string or in object form.
+   * Navigate using a string or an object.
    *
    * In hash mode, `path` will take precedence over `hash`.
    * e.g. `/foo#/bar` will navigate to `/foo`

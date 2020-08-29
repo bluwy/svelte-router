@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store'
+import { writable, Readable } from 'svelte/store'
 import { Router, Route } from './router/base'
 import { HashRouter } from './router/hash-router'
 import { PathRouter } from './router/path-router'
@@ -19,13 +19,15 @@ export let createLink: Router['createLink'] = () => {
   throw new Error('Router must be initialized before calling createLink')
 }
 
-export const route = writable<Route>({
+const writableRoute = writable<Route>({
   path: '',
   params: {},
   matched: [],
   search: new URLSearchParams(),
   hash: ''
 })
+
+export const route: Readable<Route> = { subscribe: writableRoute.subscribe }
 
 let inited = false
 
@@ -51,7 +53,7 @@ export function initRouter(options: RouterOptions) {
 
   createLink = router.createLink.bind(router)
 
-  router.currentRoute.subscribe((v) => route.set(v))
+  router.currentRoute.subscribe((v) => writableRoute.set(v))
 
   inited = true
 }
