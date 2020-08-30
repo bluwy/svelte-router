@@ -2,6 +2,7 @@
   import type { LocationInput } from './types'
   import { createLink, navigate } from './global'
 
+  /** @type {string | import('./types').LocationInput} */
   export let to: string | LocationInput
   export let replace = false
 
