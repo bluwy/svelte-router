@@ -3,20 +3,19 @@
 <!-- prettier-ignore -->
 [![package version](https://img.shields.io/npm/v/@bjornlu/svelte-router)](https://www.npmjs.com/package/@bjornlu/svelte-router)
 [![npm downloads](https://img.shields.io/npm/dm/@bjornlu/svelte-router)](https://www.npmjs.com/package/@bjornlu/svelte-router)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/@bjornlu/svelte-router)](https://bundlephobia.com/result?p=@bjornlu/svelte-router)
 [![ci](https://github.com/bluwy/svelte-router/workflows/CI/badge.svg?event=push)](https://github.com/bluwy/svelte-router/actions)
 [![e2e](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/vjxpm8/master&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/vjxpm8/runs)
 
-A straight-forward and easy-to-use SPA router.
+An easy-to-use SPA router for Svelte.
 
 > npm install @bjornlu/svelte-router
 
 ## Features
 
 - Super simple API
-- Support hash and [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API) navigation
+- Support `hash` and `path` based navigation
 - Auto `base` tag navigation
-- Easy redirection and navigation guards (with async support)
+- Easy [redirection and navigation guards](./Recipes.md#redirects-and-navigation-guard) (with async support)
 - Define all routes in one object
 - Nested routes
 - Written in TypeScript
@@ -29,18 +28,17 @@ A straight-forward and easy-to-use SPA router.
 ## Table of contents
 
 - [Usage](#usage)
-  - [Setup](#setup)
-  - [Navigation](#navigation)
-  - [Route info](#route-info)
+- [API](#api)
+  - [`<Link />`](#link)
+  - [`navigate`](#navigate)
+  - [`route`](#route)
 - [Recipes](./Recipes.md)
 
 ## Usage
 
-### Setup
-
-Before mounting your app, initialize the router:
-
 ```js
+// router.js
+
 import { initRouter } from '@bjornlu/svelte-router'
 import Home from './Home.svelte'
 import Profile from './Profile.svelte'
@@ -48,17 +46,20 @@ import ProfileWelcome from './ProfileWelcome.svelte'
 import ProfileBio from './ProfileBio.svelte'
 import Null from './Null.svelte'
 
-// Initializes the router. Subsequent calls to this function are ignored.
+// Initialize the router
 initRouter({
-  // The routing mode: "hash" or "history". Default: "hash".
+  // The routing mode: "hash" or "path"
   mode: 'history',
+  // Define routes from the most specific to the least specific
   routes: [
     {
       path: '/',
       component: Home
     },
     {
+      // Use ":variable" to use named parameters
       path: '/profile/:id',
+      // Component with childrens must have a <slot />
       component: Profile,
       children: [
         {
@@ -86,10 +87,6 @@ initRouter({
 })
 ```
 
-> Make sure routes are defined in the order of the most specific to the least.
-
-Then, in your app add `<RouterView />`:
-
 ```svelte
 <!-- App.svelte -->
 
@@ -102,15 +99,22 @@ Then, in your app add `<RouterView />`:
 </main>
 ```
 
-Done!
+```js
+// main.js
 
-> Wait. How does `<RouterView />` render nested components? The answer is that it renders them in the component's default `<slot />`. So make sure a slot tag is defined for all routes' component with children.
+import App from './App.svelte'
+import './router'
 
-### Navigation
+const app = new App({
+  target: document.getElementById('app')
+})
 
-Svelte Router provides 3 ways for navigation. Each with its own use cases:
+export default app
+```
 
-#### `<Link />` component
+## API
+
+### `<Link />`
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -119,40 +123,28 @@ Svelte Router provides 3 ways for navigation. Each with its own use cases:
 
 - Renders an anchor tag
 - Adds `aria-current="page"` when link exactly matches
-- Display correct `href` by resolving base path, param shorthand paths and hash prepend, e.g. `/foo/:id` => `/foo/123`
+- Display correct `href` by resolving base path, param shorthand paths and hash prepends, e.g. `/foo/:id` => `/foo/123`
 - Adds active class names based on `to` and current route path:
   - `link-active` when link partially matches, e.g. `/foo` matches `/foo/bar`
   - `link-exact-active` when link exactly matches, e.g. `/foo` matches `/foo`
 
-#### `use:link` action
-
-- Used on anchor tag to use its `href` as target route
-- Can also be used on any element, which its descendant anchor tags will all be applied
-- `href` value must start with `/`, `?` or `#` so that it routes
-- Add `replace` attribute on anchor tag to replace the route instead of pushing
-- Add `noroute` attribute on anchor tag to ignore routing
-
-While similar to the `<Link />` component, it does not do a few things:
-
-- No `aria-current="page"` accessibility
-- No `href` resolve, e.g. `/foo/:id` will be shown as is
-- No active class names
-
-It's recommended to use the `<Link />` component wherever possible so that the `href` resolves to a valid one. So for example when the user control-clicks the link (open in new tab), it opens a valid route.
-
-#### `navigate` function
+### `navigate`
 
 `navigate` has two function signatures:
 
-##### `navigate(to: number)`
+1.  `navigate(to: number)`
 
 Navigate using an offset in the current history. Works the same way as [`history.go`](https://developer.mozilla.org/en-US/docs/Web/API/History/go).
 
-##### `navigate(to: string | LocationInput, replace?: boolean)`
+2.  `navigate(to: string | LocationInput, replace?: boolean)`
 
-Navigate to a route using a string or an object. `string` and `LocationInput` are semantically equal and are just different ways to express the same route. For example, `/foo?key=value#top` is the same as:
+Navigate to a route using a string or an object. `string` and `LocationInput` are semantically equal and are just different ways to express the same route. For example:
 
 ```js
+'/foo?key=value#top'
+
+// same as
+
 {
   path: '/foo',
   search: { key: 'value' },
@@ -177,16 +169,16 @@ navigate({ search: '?key=value' })
 
 > In hash mode, `path` will take precedence over `hash`. e.g. `/foo#/bar` will navigate to `/foo`.
 
-### Route info
+### `route`
 
-Svelte Router exports a readable store `route` that contains the current route's information.
+Svelte Router exports a readable store `route` that contains the current route information.
 
 | Property | Type | Example | Description |
 | --- | --- | --- | --- |
-| path | string | `/foo` |  |
+| path | string | `'/foo'` |  |
 | params | Record<string, string> | `{ id: '123' }` | The parsed path parameters, e.g. /foo/:id |
 | search | URLSearchParams |  | The path search parsed with URLSearchParams |
-| hash | string | `#hey` | The path hash with leading `#`. Empty string if no hash. |
+| hash | string | `'#hey'` | The path hash with leading `#`. Empty string if no hash. |
 | matched | RouteRecord[] |  | The array of route records for all nested path segments of the current route. The matched records reference the records defined in the `routes` configuration. |
 
 ### Advanced usage

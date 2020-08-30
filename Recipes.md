@@ -4,6 +4,8 @@
 
 - [Param shorthand paths](#param-shorthand-paths)
 - [Redirects and navigation guard](#redirects-and-navigation-guard)
+- [`base` tag](#base-tag)
+- [Custom links](#custom-links)
 - [Dynamic import](#dynamic-import)
 - [Route transitions](#route-transitions)
 - [Access API before router initialization](#access-api-before-router-initialization)
@@ -14,9 +16,11 @@ Navigation paths can use the named param syntax to automatically replace the par
 
 For example, if the current route is `/foo/123/bar` and the route param is `{ id: '123' }`, `navigate('/foo/:id/baz')` will route to `/foo/123/baz`.
 
+This syntax can also be used in `LocationInput`'s path and with `createLink` and `<Link />`.
+
 ## Redirects and navigation guard
 
-Svelte Router combines these two concepts into a single `redirect` property when configuring routes. `redirect` accepts the same type as `navigate`'s `to` param. On top of that, it also accepts a function or async function that returns the value.
+Svelte Router combines these two concepts into a single `redirect` property. When configuring routes, `redirect` accepts the same type as `navigate`'s `to` param. Furthermore, it also accepts a function or async function that returns the value.
 
 <details>
   <summary>View Typescript type</summary>
@@ -34,7 +38,10 @@ type RedirectOption = Thunk<Promisable<string | LocationInput | undefined>>
 Navigation guards work by using a function that conditionally returns a `string` or `LocationInput` to redirect, **or** `undefined` to stay on route. For example:
 
 ```js
+import { initRouter } from '@bjornlu/svelte-router'
+
 initRouter({
+  mode: 'hash',
   routes: [
     {
       path: '/secret',
@@ -50,9 +57,42 @@ initRouter({
 })
 ```
 
+## `base` tag
+
+In `path` mode, if the app is served under a specific path of a domain, then a `base` tag needs to be declared in the `head`. For example, if the app is at `/app`, the `head` should have:
+
+```html
+<base href="/app" />
+```
+
+## Custom links
+
+Svelte Router exposes the `createLink` function which allows creating custom links for any scenario. In fact, the built-in `<Link />` component also [uses it under-the-hood](./src/Link.svelte). Example usage:
+
+```js
+import { get } from 'svelte/store'
+import { createLink } from '@bjornlu/svelte-router'
+
+// Example scenario:
+// - `hash` mode
+// - Current route is '/foo/123/bar'
+// - Route param is { id: '123' }
+
+// Creates a readable store with link properties
+const link = createLink('/foo/:id')
+
+// Get current store value.
+// In Svelte components, $link can be used directly without `get`.
+const $link = get(link)
+
+console.log($link.href) // => '#/foo/123/baz'
+console.log($link.isActive) // => true
+console.log($link.isExactActive) // => false
+```
+
 ## Dynamic import
 
-Dynamically importing components can work with [`svelte-spa-chunk`](https://github.com/hmmhmmhm/svelte-spa-chunk). Built-in support is currently unavailable. Library usage:
+Dynamically importing components can work with [`svelte-spa-chunk`](https://github.com/hmmhmmhm/svelte-spa-chunk). Built-in support is currently unavailable. Example usage:
 
 ```js
 import { initRouter } from '@bjornlu/svelte-router'
@@ -61,6 +101,7 @@ import ChunkComponent from 'svelte-spa-chunk/Chunk.svelte'
 const Chunk = ChunkGenerator(ChunkComponent)
 
 initRouter({
+  mode: 'hash',
   routes: [
     {
       path: '/',
@@ -86,7 +127,9 @@ Route components can use [svelte/transition](https://svelte.dev/docs#svelte_tran
 
 ## Access API before router initialization
 
-In cases where the API such as `route` and `navigate` need to be accessed before `initRouter`,the `route` store will have a default value of:
+`navigate` and `createLink` will both throw error if called before `initRouter`.
+
+However, `route` has a default value which can be accessed before `initRouter`:
 
 ```js
 {
@@ -97,5 +140,3 @@ In cases where the API such as `route` and `navigate` need to be accessed before
   hash: ''
 }
 ```
-
-While `navigate` will not trigger any navigation at all.
