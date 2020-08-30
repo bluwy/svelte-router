@@ -10,10 +10,10 @@
 
 <a
   {...$$restProps}
-  class:link-active={link.isActive}
-  class:link-exact-active={link.isExactActive}
-  href={link.href}
-  aria-current={link.isExactActive ? 'page' : undefined}
+  class:link-active={$link.isActive}
+  class:link-exact-active={$link.isExactActive}
+  href={$link.href}
+  aria-current={$link.isExactActive ? 'page' : undefined}
   on:click|preventDefault={() => navigate(to, replace)}
 >
   <slot />

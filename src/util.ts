@@ -15,6 +15,14 @@ export function parseLocationInput(to: string): LocationInput {
   }
 }
 
+/** Replace named param in path, e.g. `/foo/:id` => `/foo/123` */
+export function replacePathParams(
+  path: string,
+  params: Record<string, string>
+) {
+  return path.replace(/:([^/]+)/g, (o, v) => params[v] ?? o)
+}
+
 /** Makes sure path has leading "/" and no trailing "/" */
 export function formatPath(path: string) {
   if (path.endsWith('/')) {

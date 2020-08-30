@@ -1,6 +1,7 @@
+import { get } from 'svelte/store'
 import { Router } from './base'
 import { LocationInput } from '../types'
-import { formatPath, basePath, joinPaths } from '../util'
+import { formatPath, basePath, joinPaths, replacePathParams } from '../util'
 
 export class PathRouter extends Router {
   getCurrentPath() {
@@ -43,11 +44,12 @@ export class PathRouter extends Router {
     return joinPaths(basePath, path) + search + hash
   }
 
-  replaceParams(to: LocationInput) {
+  replaceParams(to: LocationInput, params?: Record<string, string>) {
     const newTo = { ...to }
+    const routeParams = params ?? get(this.currentRoute).params
 
-    if (newTo.path != null) {
-      newTo.path = this.replacePathParams(newTo.path)
+    if (newTo.path) {
+      newTo.path = replacePathParams(newTo.path, routeParams)
     }
 
     return newTo

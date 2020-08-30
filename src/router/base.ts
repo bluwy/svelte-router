@@ -1,4 +1,4 @@
-import { Readable, readable, get } from 'svelte/store'
+import { Readable, readable, derived } from 'svelte/store'
 import { MatchedRoute, RouteMatcher } from '../matcher'
 import { LocationInput, RouteRecord } from '../types'
 import { LOCATION_CHANGE } from '../location-change-shim'
@@ -39,7 +39,10 @@ export abstract class Router {
   protected abstract getPath(to: LocationInput): string | undefined
   protected abstract createUrl(to: LocationInput): string
   protected abstract createLinkHref(to: LocationInput): string
-  protected abstract replaceParams(to: LocationInput): LocationInput
+  protected abstract replaceParams(
+    to: LocationInput,
+    params?: Record<string, string>
+  ): LocationInput
 
   /**
    * Navigate using an offset in the current history. Works the same way as
@@ -82,30 +85,31 @@ export abstract class Router {
     }
   }
 
-  createLink(to: string | LocationInput): LinkState {
-    if (typeof to === 'string') {
-      to = parseLocationInput(to)
-    }
+  createLink(to: string | LocationInput): Readable<LinkState> {
+    const input = typeof to === 'string' ? parseLocationInput(to) : to
 
-    const href = this.createLinkHref(this.replaceParams(to))
-    const path = this.getPath(to)
+    return derived(this.currentRoute, ($currentRoute) => {
+      const replacedInput = this.replaceParams(input, $currentRoute.params)
+      const href = this.createLinkHref(replacedInput)
+      const path = this.getPath(replacedInput)
 
-    if (path == null) {
+      if (path == null) {
+        return {
+          href,
+          isActive: false,
+          isExactActive: false
+        }
+      }
+
+      const formattedPath = formatPath(path)
+      const routePath = $currentRoute.path
+
       return {
         href,
-        isActive: false,
-        isExactActive: false
+        isActive: routePath.startsWith(formattedPath),
+        isExactActive: routePath === formattedPath
       }
-    }
-
-    const formattedPath = formatPath(path)
-    const routePath: string = get(this.currentRoute).path
-
-    return {
-      href,
-      isActive: routePath.startsWith(formattedPath),
-      isExactActive: routePath === formattedPath
-    }
+    })
   }
 
   private getCurrentRoute(): Route {
@@ -119,11 +123,5 @@ export abstract class Router {
       params: matchedRoute?.params ?? {},
       matched: matchedRoute?.matched ?? []
     }
-  }
-
-  /** Replace named param in path, e.g. `/foo/:id` => `/foo/123` */
-  protected replacePathParams(path: string) {
-    const routeParams = get(this.currentRoute)?.params ?? {}
-    return path.replace(/:([^/]+)/g, (o, v) => routeParams[v] ?? o)
   }
 }
