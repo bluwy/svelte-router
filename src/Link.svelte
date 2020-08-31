@@ -7,6 +7,22 @@
   export let replace = false
 
   $: link = createLink(to)
+
+  function handleClick(e: MouseEvent) {
+    if (
+      e.ctrlKey ||
+      e.metaKey ||
+      e.altKey ||
+      e.shiftKey ||
+      e.button ||
+      e.defaultPrevented
+    ) {
+      return
+    }
+
+    e.preventDefault()
+    navigate(to, replace)
+  }
 </script>
 
 <a
@@ -15,7 +31,7 @@
   class:link-exact-active={$link.isExactActive}
   href={$link.href}
   aria-current={$link.isExactActive ? 'page' : undefined}
-  on:click|preventDefault={() => navigate(to, replace)}
+  on:click={handleClick}
 >
   <slot />
 </a>
