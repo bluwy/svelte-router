@@ -113,7 +113,7 @@ initRouter({
 
 ## Route transitions
 
-Route components can use [svelte/transition](https://svelte.dev/docs#svelte_transition) to animate between routes. Wrap the route component with a container and apply the transition:
+Route components can use [svelte/transition](https://svelte.dev/tutorial/transition) to animate between routes. Wrap the route component with a container and apply the transition:
 
 ```svelte
 <script>
@@ -124,6 +124,12 @@ Route components can use [svelte/transition](https://svelte.dev/docs#svelte_tran
   Content
 </div>
 ```
+
+When navigating to another route, if the current route component's descendants transition too, it may cause the UI to be in a half-transitioned state. There are 2 solutions:
+
+1. Use [local transitions](https://svelte.dev/tutorial/local-transitions): Make sure the descendants' transitions are local, e.g. `<div transition:fade|local></div>`
+
+2. [Tick](https://svelte.dev/tutorial/tick) before navigate: This will wait for the descendants' transitions to end before navigating, e.g. `tick().then(() => navigate('/foo'))`
 
 ## Access API before router initialization
 

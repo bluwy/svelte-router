@@ -10,6 +10,8 @@ An easy-to-use SPA router for Svelte.
 
 > npm install @bjornlu/svelte-router
 
+[**Comparison with other routers**](./Comparison.md)
+
 ## Features
 
 - Super simple API
@@ -18,7 +20,6 @@ An easy-to-use SPA router for Svelte.
 - Easy [redirection and navigation guards](./Recipes.md#redirects-and-navigation-guard) (with async support)
 - Define all routes in one object
 - Nested routes
-- Written in TypeScript
 
 ## Not supported
 
@@ -116,10 +117,11 @@ export default app
 
 ### `<Link />`
 
-| Prop | Type | Default | Description |
-| --- | --- | --- | --- |
-| to | string \| LocationInput |  | Target route |
-| replace | boolean | `false` | Replace current route instead of pushing |
+<!-- prettier-ignore -->
+| Prop    | Type                    | Default | Description                              |
+|---------|-------------------------|---------|------------------------------------------|
+| to      | string \| LocationInput |         | Target route                             |
+| replace | boolean                 | `false` | Replace current route instead of pushing |
 
 - Renders an anchor tag
 - Adds `aria-current="page"` when link exactly matches
@@ -173,13 +175,14 @@ navigate({ search: '?key=value' })
 
 Svelte Router exports a readable store `route` that contains the current route information.
 
-| Property | Type | Example | Description |
-| --- | --- | --- | --- |
-| path | string | `'/foo'` |  |
-| params | Record<string, string> | `{ id: '123' }` | The parsed path parameters, e.g. /foo/:id |
-| search | URLSearchParams |  | The path search parsed with URLSearchParams |
-| hash | string | `'#hey'` | The path hash with leading `#`. Empty string if no hash. |
-| matched | RouteRecord[] |  | The array of route records for all nested path segments of the current route. The matched records reference the records defined in the `routes` configuration. |
+<!-- prettier-ignore -->
+| Property | Type            | Example         | Description                                                                                                                                                    |
+|----------|-----------------|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| path     | string          | `'/foo'`        |                                                                                                                                                                |
+| params   | Record          | `{ id: '123' }` | The parsed path parameters, e.g. /foo/:id                                                                                                                      |
+| search   | URLSearchParams |                 | The path search parsed with URLSearchParams                                                                                                                    |
+| hash     | string          | `'#hey'`        | The path hash with leading `#`. Empty string if no hash.                                                                                                       |
+| matched  | RouteRecord[]   |                 | The array of route records for all nested path segments of the current route. The matched records reference the records defined in the `routes` configuration. |
 
 ### Advanced usage
 
