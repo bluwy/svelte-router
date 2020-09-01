@@ -1,7 +1,7 @@
 {
   "name": "@bjornlu/svelte-router",
   "description": "Simple router for Svelte",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "dist/svelte-router.umd.js",
   "module": "dist/index.js",
   "svelte": "dist/index.js",

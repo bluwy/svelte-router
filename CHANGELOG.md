@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 - 2020-09-01
+
+### Fixed
+
+- `<Link />` will work properly with special key clicks, e.g. ctrl-click
+
 ## 0.2.0 - 2020-08-30
 
 ### Added
@@ -11,8 +17,8 @@
 
 - Rename `history` mode to `path`
 - All router options need to be defined
-- All public APIs, except for `route`, will now throw an error if called before `initRouter`
-- `initRouter` will throw an error if called more than once
+- All public APIs, except for `route`, will now throw error if called before `initRouter`
+- `initRouter` will throw error if called more than once
 - `LocationInput`'s `path`, `search` and `hash` will treat empty string as undefined
 
 ### Removed
