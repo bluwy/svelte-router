@@ -42,6 +42,7 @@ describe('history router', { baseUrl: 'http://localhost:10002' }, () => {
   it('should redirect', () => {
     cy.visit('/secret')
     cy.location('pathname').should('eq', '/')
+    cy.get('h2').contains('Home').should('exist')
   })
 
   it('should not redirect if undefined', () => {
