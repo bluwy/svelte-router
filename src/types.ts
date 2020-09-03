@@ -8,17 +8,13 @@ export interface LocationInput {
   hash?: string
 }
 
-export type RedirectOption = Thunk<
-  Promisable<string | LocationInput | undefined>
->
-
 export interface RouteRecord {
   /** The route path, e.g. "/foo" */
   path: string
   /** Svelte component */
-  component?: any
+  component?: Function
   /** Redirect to another path if route match */
-  redirect?: RedirectOption
+  redirect?: Thunk<Promisable<string | LocationInput | undefined>>
   /**
    * Array of children routes. If defined, this route component requires a
    * <slot /> component to render the child route.

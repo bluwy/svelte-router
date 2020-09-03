@@ -2,7 +2,7 @@ import './location-change-shim'
 export { default as RouterView } from './RouterView.svelte'
 export { default as Link } from './Link.svelte'
 export { LinkState, Route } from './router/base'
-export { LocationInput, RouteRecord, RedirectOption } from './types'
+export { LocationInput, RouteRecord } from './types'
 export {
   route,
   createLink,
