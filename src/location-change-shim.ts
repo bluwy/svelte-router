@@ -1,17 +1,22 @@
-/*
-  Enable listening to all location changes that may be triggered by `pushState`,
-  `replaceState`, `onpopstatte` and `onhashchange`. This enables the router
-  to update whenever needed.
-
-  No side-effects introduced.
-*/
+// Listen to location changes that are triggered by:
+// - pushState
+// - replaceState
+// - onpopstate
+// - onhashchange
 
 export const LOCATION_CHANGE = 'svelterouterlocationchange'
 
 const originalPushState = history.pushState
 const originalReplaceState = history.replaceState
 
-const dispatch = () => window.dispatchEvent(new CustomEvent(LOCATION_CHANGE))
+let prevLocation = ''
+
+function dispatch() {
+  if (window.location.href !== prevLocation) {
+    window.dispatchEvent(new CustomEvent(LOCATION_CHANGE))
+    prevLocation = window.location.href
+  }
+}
 
 history.pushState = function (...args) {
   originalPushState.apply(this, args)
