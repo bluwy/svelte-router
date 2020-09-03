@@ -1,6 +1,7 @@
 import { Thunk, Promisable, LocationInput } from './types'
 
 export const basePath =
+  /*#__PURE__*/
   document.getElementsByTagName('base').length > 0
     ? document.baseURI.replace(window.location.origin, '')
     : '/'

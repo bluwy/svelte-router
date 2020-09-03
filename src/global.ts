@@ -4,11 +4,6 @@ import { HashRouter } from './router/hash-router'
 import { PathRouter } from './router/path-router'
 import { RouteRecord } from './types'
 
-export interface RouterOptions {
-  mode: 'hash' | 'path'
-  routes: RouteRecord[]
-}
-
 // Will be assigned when `initRouter`
 export let navigate: Router['navigate'] = () => {
   throw new Error('Router must be initialized before calling navigate')
@@ -31,29 +26,26 @@ export const route: Readable<Route> = { subscribe: writableRoute.subscribe }
 
 let inited = false
 
-export function initRouter(options: RouterOptions) {
-  if (inited) {
-    throw new Error(
-      'Router is already initialized. Cannot re-initialize router.'
-    )
-  }
-
-  let router: Router
-
-  switch (options.mode) {
-    case 'hash':
-      router = new HashRouter(options.routes)
-      break
-    case 'path':
-      router = new PathRouter(options.routes)
-      break
-  }
-
+function initRouter(router: Router) {
   navigate = router.navigate.bind(router)
-
   createLink = router.createLink.bind(router)
-
   router.currentRoute.subscribe((v) => writableRoute.set(v))
+}
 
-  inited = true
+function checkInit() {
+  if (inited) {
+    throw new Error('Router already initialized. Cannot re-initialize router.')
+  } else {
+    inited = true
+  }
+}
+
+export function initHashRouter(routes: RouteRecord[]) {
+  checkInit()
+  initRouter(new HashRouter(routes))
+}
+
+export function initPathRouter(routes: RouteRecord[]) {
+  checkInit()
+  initRouter(new PathRouter(routes))
 }
