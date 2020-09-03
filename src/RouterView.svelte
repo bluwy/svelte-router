@@ -9,13 +9,12 @@
   $: matched = nextMatched ?? $route.matched
   $: hasChildren = matched.length > 1
   $: component = matched[0]?.component
-  $: redirect = matched[0]?.redirect
 
-  let canRender = false
-  $: if (redirect != null) {
+  let canRender: boolean
+  $: {
     canRender = false
 
-    handlePromisable(handleThunk(redirect), (result) => {
+    handlePromisable(handleThunk(matched[0]?.redirect), (result) => {
       if (result != null) {
         tick().then(() => navigate(result, true))
       } else {
@@ -25,7 +24,7 @@
   }
 </script>
 
-{#if !redirect || canRender}
+{#if canRender}
   {#if component != null}
     {#if hasChildren}
       <svelte:component this={component}>
