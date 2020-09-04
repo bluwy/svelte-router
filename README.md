@@ -85,6 +85,7 @@ initPathRouter([
 ])
 ```
 
+<!-- prettier-ignore -->
 ```svelte
 <!-- App.svelte -->
 

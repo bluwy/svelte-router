@@ -113,6 +113,7 @@ initPathRouter([
 
 Route components can use [svelte/transition](https://svelte.dev/tutorial/transition) to animate between routes. Wrap the route component with a container and apply the transition:
 
+<!-- prettier-ignore -->
 ```svelte
 <script>
   import { fade } from 'svelte/transition'

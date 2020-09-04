@@ -20,9 +20,7 @@ const createConfig = (routerMode, publicPath, port) => ({
   plugins: [
     svelte({
       preprocess: svelteConfig.preprocess,
-      css: (css) => {
-        css.write(p(publicPath, 'build/bundle.css'))
-      }
+      css: (v) => v.write('bundle.css')
     }),
     resolve(),
     replace({
