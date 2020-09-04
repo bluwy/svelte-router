@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.3.0 - 2020-09-04
+
+### Added
+
+- Improve `component` typing
+
+### Changed
+
+- `route` only update if url change
+- Replace `initRouter` with `initHashRouter` and `initPathRouter` to improve tree-shaking
+
+### Removed
+
+- Remove `RedirectOption` type export
+
 ## 0.2.1 - 2020-09-01
 
 ### Fixed
