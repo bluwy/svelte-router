@@ -20,6 +20,7 @@ An easy-to-use SPA router for Svelte.
 - Easy [redirection and navigation guards](./Recipes.md#redirects-and-navigation-guard) (with async support)
 - Define all routes in one object
 - Nested routes
+- Route parameter parsing with [regexparam](https://github.com/lukeed/regexparam)
 
 ## Not supported
 
@@ -40,52 +41,48 @@ An easy-to-use SPA router for Svelte.
 ```js
 // router.js
 
-import { initRouter } from '@bjornlu/svelte-router'
+import { initPathRouter } from '@bjornlu/svelte-router'
 import Home from './Home.svelte'
 import Profile from './Profile.svelte'
 import ProfileWelcome from './ProfileWelcome.svelte'
 import ProfileBio from './ProfileBio.svelte'
 import Null from './Null.svelte'
 
-// Initialize the router
-initRouter({
-  // The routing mode: "hash" or "path"
-  mode: 'history',
+// Initialize the router. Use `initHashRouter` for hash mode.
+initPathRouter([
   // Define routes from the most specific to the least specific
-  routes: [
-    {
-      path: '/',
-      component: Home
-    },
-    {
-      // Use ":variable" to use named parameters
-      path: '/profile/:id',
-      // Component with childrens must have a <slot />
-      component: Profile,
-      children: [
-        {
-          path: '/welcome',
-          component: ProfileWelcome
-        },
-        {
-          path: '/bio',
-          component: ProfileBio
-        }
-      ]
-    },
-    {
-      path: '/secret',
-      // Redirect to a new path if this route is matched.
-      // Also accepts a function that returns a string, and may be asynchronous.
-      // Learn more in the Recipes section.
-      redirect: '/'
-    },
-    {
-      path: '/*',
-      component: Null
-    }
-  ]
-})
+  {
+    path: '/',
+    component: Home
+  },
+  {
+    // Use ":variable" to use named parameters
+    path: '/profile/:id',
+    // Component with childrens must have a <slot />
+    component: Profile,
+    children: [
+      {
+        path: '/welcome',
+        component: ProfileWelcome
+      },
+      {
+        path: '/bio',
+        component: ProfileBio
+      }
+    ]
+  },
+  {
+    path: '/secret',
+    // Redirect to a new path if this route is matched.
+    // Also accepts a function that returns a string, and may be asynchronous.
+    // Learn more in the Recipes section.
+    redirect: '/'
+  },
+  {
+    path: '/*',
+    component: Null
+  }
+])
 ```
 
 ```svelte

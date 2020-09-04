@@ -30,7 +30,11 @@ type Thunk<T> = T | (() => T)
 
 type Promisable<T> = T | Promise<T>
 
-type RedirectOption = Thunk<Promisable<string | LocationInput | undefined>>
+interface RouteRecord {
+  // ...
+  redirect?: Thunk<Promisable<string | LocationInput | undefined>>
+  // ...
+}
 ```
 
 </details>
@@ -38,23 +42,20 @@ type RedirectOption = Thunk<Promisable<string | LocationInput | undefined>>
 Navigation guards work by using a function that conditionally returns a `string` or `LocationInput` to redirect, **or** `undefined` to stay on route. For example:
 
 ```js
-import { initRouter } from '@bjornlu/svelte-router'
+import { initPathRouter } from '@bjornlu/svelte-router'
 
-initRouter({
-  mode: 'hash',
-  routes: [
-    {
-      path: '/secret',
-      redirect: () => {
-        if (localStorage.getItem('password') === 'hunter2') {
-          return undefined // Continue route
-        } else {
-          return '/' // Redirect to "/"
-        }
+initPathRouter([
+  {
+    path: '/secret',
+    redirect: () => {
+      if (localStorage.getItem('password') === 'hunter2') {
+        return undefined // Continue route
+      } else {
+        return '/' // Redirect to "/"
       }
     }
-  ]
-})
+  }
+])
 ```
 
 ## `base` tag
@@ -92,23 +93,20 @@ console.log($link.isExactActive) // => false
 
 ## Dynamic import
 
-Dynamically importing components can work with [`svelte-spa-chunk`](https://github.com/hmmhmmhm/svelte-spa-chunk). Built-in support is currently unavailable. Example usage:
+Dynamically importing components can work with [`svelte-spa-chunk`](https://github.com/hmmhmmhm/svelte-spa-chunk) and can be further customized with [`svelte-loadable](https://github.com/kaisermann/svelte-loadable). Example usage:
 
 ```js
-import { initRouter } from '@bjornlu/svelte-router'
+import { initPathRouter } from '@bjornlu/svelte-router'
 import { ChunkGenerator } from 'svelte-spa-chunk'
 import ChunkComponent from 'svelte-spa-chunk/Chunk.svelte'
 const Chunk = ChunkGenerator(ChunkComponent)
 
-initRouter({
-  mode: 'hash',
-  routes: [
-    {
-      path: '/',
-      component: Chunk(() => import('./Home.svelte'))
-    }
-  ]
-})
+initPathRouter([
+  {
+    path: '/',
+    component: Chunk(() => import('./Home.svelte'))
+  }
+])
 ```
 
 ## Route transitions
@@ -133,9 +131,9 @@ When navigating to another route, if the current route component's descendants t
 
 ## Access API before router initialization
 
-`navigate` and `createLink` will both throw error if called before `initRouter`.
+`navigate` and `createLink` will both throw error if called before `initHashRouter` or `initPathRouter`.
 
-However, `route` has a default value which can be accessed before `initRouter`:
+However, `route` has a default value which can be accessed before router initialization:
 
 ```js
 {
