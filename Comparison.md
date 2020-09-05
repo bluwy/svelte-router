@@ -1,5 +1,13 @@
 # Comparison
 
+## Key difference
+
+One main feature most routers don't have is a global route store. Most routers require the route data to be manually passed via props or use [context](https://svelte.dev/tutorial/context-api) which only works in components.
+
+I have however found one library, [yrv](https://github.com/pateketrueke/yrv) to have a properly implemented global route store, but I could not get it to work with Vite.
+
+## General difference
+
 A non-exhaustive list of differences between popular routers:
 
 <!-- prettier-ignore -->
