@@ -4,7 +4,7 @@
 
 - [Param shorthand paths](#param-shorthand-paths)
 - [Redirects and navigation guard](#redirects-and-navigation-guard)
-- [`base` tag](#base-tag)
+- [base tag](#base-tag)
 - [Custom links](#custom-links)
 - [Dynamic import](#dynamic-import)
 - [Route transitions](#route-transitions)
@@ -58,17 +58,20 @@ initPathRouter([
 ])
 ```
 
-## `base` tag
+## base tag
 
-In `path` mode, if the app is served under a specific path of a domain, then a `base` tag needs to be declared in the `head`. For example, if the app is at `/app`, the `head` should have:
+In `path` mode, if the app is served under a specific path of a domain, then a `base` tag needs to be declared in the `head`. For example, if the app is at `/app`, the `head` should be:
 
 ```html
-<base href="/app" />
+<head>
+  <base href="/app" />
+  <!-- ... other tags -->
+</head>
 ```
 
 ## Custom links
 
-Svelte Router exposes the `createLink` function which allows creating custom links for any scenario. In fact, the built-in `<Link />` component also [uses it under-the-hood](./src/Link.svelte). Example usage:
+Svelte Router exposes a `createLink` function to allow retrieve custom link information. In fact, the built-in `<Link />` component also [uses it under-the-hood](./src/components/Link.svelte). Example usage:
 
 ```js
 import { get } from 'svelte/store'
@@ -93,7 +96,7 @@ console.log($link.isExactActive) // => false
 
 ## Dynamic import
 
-Dynamically importing components can work with [`svelte-spa-chunk`](https://github.com/hmmhmmhm/svelte-spa-chunk) and can be further customized with [`svelte-loadable](https://github.com/kaisermann/svelte-loadable). Example usage:
+Dynamically importing components can work with [`svelte-spa-chunk`](https://github.com/hmmhmmhm/svelte-spa-chunk) and can be further customized with [`svelte-loadable`](https://github.com/kaisermann/svelte-loadable). Example usage:
 
 ```js
 import { initPathRouter } from '@bjornlu/svelte-router'
