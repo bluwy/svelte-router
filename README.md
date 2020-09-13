@@ -31,7 +31,7 @@ An easy-to-use SPA router for Svelte.
 
 - [Usage](#usage)
 - [API](#api)
-  - [`<Link />`](#link)
+  - [`<Link />`](#link-)
   - [`navigate`](#navigate)
   - [`route`](#route)
 - [Recipes](./Recipes.md)

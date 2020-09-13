@@ -2,13 +2,12 @@
   import { tick } from 'svelte'
   import type { RouteRecord } from '../types'
   import { route, navigate } from '../global'
-  import { handleThunk, handlePromisable } from '../util'
+  import { handleThunk, handleComponentThunk, handlePromisable } from '../util'
 
   export let nextMatched: RouteRecord[] | undefined = undefined
 
   $: matched = nextMatched ?? $route.matched
   $: hasChildren = matched.length > 1
-  $: component = matched[0]?.component
 
   let canRender: boolean
   $: {
@@ -20,6 +19,15 @@
       } else {
         canRender = true
       }
+    })
+  }
+
+  let component: Function | undefined
+  $: {
+    component = undefined
+
+    handlePromisable(handleComponentThunk(matched[0]?.component), (result) => {
+      component = typeof result === 'object' ? result.default : result
     })
   }
 </script>

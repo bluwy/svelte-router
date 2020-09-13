@@ -57,6 +57,15 @@ export function handleThunk<T>(thunk: Thunk<T>): T {
   return typeof thunk === 'function' ? (thunk as any)() : thunk
 }
 
+export function handleComponentThunk<T>(thunk: Thunk<T>): T {
+  // Svelte components are classes/functions so thunk won't actually work.
+  // The workaround is by assuming this syntax `() => import` to be used.
+  // Since lambda has no prototype, so we check it before calling thunk.
+  return typeof thunk === 'function' && !('prototype' in thunk)
+    ? (thunk as any)()
+    : thunk
+}
+
 export function handlePromisable<T>(
   promisable: Promisable<T>,
   callback: (value: T) => void

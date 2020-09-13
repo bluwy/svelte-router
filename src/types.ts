@@ -12,7 +12,7 @@ export interface RouteRecord {
   /** The route path, e.g. "/foo" */
   path: string
   /** Svelte component */
-  component?: Function
+  component?: Thunk<Promisable<Function | { default: Function } | undefined>>
   /** Redirect to another path if route match */
   redirect?: Thunk<Promisable<string | LocationInput | undefined>>
   /**
