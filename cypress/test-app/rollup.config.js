@@ -3,18 +3,17 @@ import resolve from '@rollup/plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
 import typescript from '@rollup/plugin-typescript'
 import svelte from 'rollup-plugin-svelte'
-import serve from 'rollup-plugin-serve'
 
 const svelteConfig = require('../../svelte.config')
 
 const p = (...args) => path.resolve(__dirname, ...args)
 
-const createConfig = (routerMode, publicPath, port) => ({
+const createConfig = (routerMode, publicPath) => ({
   input: p('src/main.ts'),
   output: {
     sourcemap: true,
-    file: p(publicPath, 'build/bundle.js'),
-    format: 'iife',
+    dir: p(publicPath, 'build'),
+    format: 'es',
     name: 'app'
   },
   plugins: [
@@ -29,17 +28,12 @@ const createConfig = (routerMode, publicPath, port) => ({
     }),
     typescript({
       tsconfig: p('tsconfig.json')
-    }),
-    serve({
-      contentBase: p(publicPath),
-      port,
-      historyApiFallback: routerMode === 'path'
     })
   ]
 })
 
 export default [
-  createConfig('hash', 'public-hash', 10001),
-  createConfig('path', 'public-path', 10002),
-  createConfig('path', 'public-path-base', 10003)
+  createConfig('hash', 'public-hash'),
+  createConfig('path', 'public-path'),
+  createConfig('path', 'public-path-base')
 ]

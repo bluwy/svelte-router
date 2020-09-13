@@ -1,0 +1,1 @@
+<p>Dynamic import</p>

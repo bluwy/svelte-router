@@ -49,4 +49,10 @@ describe('history base router', { baseUrl: 'http://localhost:10003' }, () => {
     cy.visit('/test/profile/123/bio')
     cy.get('h3').contains('Bio').should('exist')
   })
+
+  it('should dynamically import a route', () => {
+    cy.visit('/test')
+    cy.get('a').contains('Dynamic').click()
+    cy.contains('Dynamic import').should('exist')
+  })
 })
