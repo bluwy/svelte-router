@@ -1,11 +1,13 @@
 import { get } from 'svelte/store'
 import { Router } from './base'
 import { LocationInput } from '../types'
-import { formatPath, basePath, joinPaths, replacePathParams } from '../util'
+import { formatPath, getBasePath, joinPaths, replacePathParams } from '../util'
 
 export class PathRouter extends Router {
+  private readonly basePath = getBasePath()
+
   getCurrentPath() {
-    return formatPath(window.location.pathname.replace(basePath, ''))
+    return formatPath(window.location.pathname.replace(this.basePath, ''))
   }
 
   getCurrentLocationInput(): LocationInput {
@@ -24,7 +26,7 @@ export class PathRouter extends Router {
     const url = new URL(window.location.href)
 
     if (to.path) {
-      url.pathname = joinPaths(basePath, to.path)
+      url.pathname = joinPaths(this.basePath, to.path)
     }
 
     url.search = to.search
@@ -41,7 +43,7 @@ export class PathRouter extends Router {
     const search = to.search ?? ''
     const hash = to.hash ?? ''
 
-    return joinPaths(basePath, path) + search + hash
+    return joinPaths(this.basePath, path) + search + hash
   }
 
   replaceParams(to: LocationInput, params?: Record<string, string>) {

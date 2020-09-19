@@ -1,5 +1,5 @@
 import regexparam from 'regexparam'
-import { addTrailingSlash, formatPath, joinPaths } from './util'
+import { ensureTrailingSlash, formatPath, joinPaths } from './util'
 import { RouteRecord } from './types'
 
 export interface MatchedRoute {
@@ -37,7 +37,7 @@ export class RouteMatcher {
   matchRoute(path: string): MatchedRoute | undefined {
     // Add trailing slash to route path so it properly matches nested routes too.
     // e.g. /foo should match /foo/*
-    const matchPath = addTrailingSlash(path)
+    const matchPath = ensureTrailingSlash(path)
 
     for (const matchData of this.matchDatas) {
       const params: Record<string, string> = {}
