@@ -1,6 +1,6 @@
 {
   "name": "@bjornlu/svelte-router",
-  "description": "Simple router for Svelte",
+  "description": "An easy-to-use SPA router for Svelte",
   "version": "0.3.0",
   "main": "dist/svelte-router.umd.js",
   "module": "dist/index.js",
@@ -42,9 +42,17 @@
     "cy:setup:serve": "node ./scripts/cy-serve.js",
     "cy:open": "cypress open",
     "cy:run": "cypress run --headless",
-    "lint": "prettier --check '**/*.{js,ts,svelte,md}'",
-    "format": "prettier --write '**/*.{js,ts,svelte,md}'",
+    "lint": "prettier --check '**/*.{html,js,ts,svelte,md}'",
+    "format": "prettier --write '**/*.{html,js,ts,svelte,md}'",
     "prepublishOnly": "yarn clean && yarn build"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{html,js,ts,svelte,md}": "prettier --write"
   },
   "peerDependencies": {
     "svelte": "^3.20.0"
@@ -58,8 +66,10 @@
     "@rollup/plugin-typescript": "^5.0.2",
     "@types/jest": "^26.0.13",
     "cypress": "^5.1.0",
+    "husky": "^4.3.0",
     "jest": "^26.4.2",
     "jest-transform-stub": "^2.0.0",
+    "lint-staged": "^10.4.0",
     "prettier": "^2.1.1",
     "prettier-plugin-svelte": "^1.2.1",
     "rimraf": "^3.0.2",
