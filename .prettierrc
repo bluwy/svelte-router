@@ -1,8 +1,9 @@
 {
-  "proseWrap": "never",
   "semi": false,
   "singleQuote": true,
   "trailingComma": "none",
+  "proseWrap": "never",
+  "embeddedLanguageFormatting": "off",
   "svelteBracketNewLine": true,
   "svelteSortOrder": "scripts-markup-styles"
 }
