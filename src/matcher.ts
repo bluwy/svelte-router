@@ -39,7 +39,7 @@ export class RouteMatcher {
   matchRoute(path: string): MatchedRoute | undefined {
     // Add trailing slash to route path so it properly matches nested routes too.
     // e.g. /foo should match /foo/*
-    const matchPath = ensureTrailingSlash(path)
+    const matchPath = ensureTrailingSlash(formatPath(path))
 
     for (const matchData of this.matchDatas) {
       const params: Record<string, string> = {}
