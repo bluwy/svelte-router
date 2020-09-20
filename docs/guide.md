@@ -218,7 +218,7 @@ You can use the global `$route` to do so by subscribing to it anywhere in your a
 </script>
 ```
 
-The `$route` contains properties such as `path`, `search`, `hash`, `params` and `matched`. You can learn more about it in its API reference.
+The `$route` contains properties such as `path`, `search`, `hash`, `params` and `matched`. You can learn more about it in its [API reference](./api.md/#route).
 
 ## Link Information
 
