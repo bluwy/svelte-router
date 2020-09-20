@@ -79,6 +79,11 @@ Ready to learn more? The documentation is split into two parts:
 - [Guide](./docs/guide.md): Covers common usage to advanced topics
 - [API reference](./docs/api.md): Covers the structure of the API
 
+## Examples
+
+- [Basic](./examples/basic): Basic rotuer usage
+- [Lazy loading]('./examples/lazy-loading): Lazy loading setup example
+
 ## Contributing
 
 All contributions are welcomed. For any major changes, please open an issue first :)

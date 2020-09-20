@@ -1,6 +1,9 @@
-node_modules
-dist
+**/node_modules
+**/dist
 **/build
 .vscode
 cypress/screenshots
 cypress/videos
+examples/**/package-lock.json
+examples/**/yarn.lock
+examples/**/pnpm-lock.yaml
