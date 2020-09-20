@@ -42,8 +42,8 @@
     "cy:setup:serve": "node ./scripts/cy-serve.js",
     "cy:open": "cypress open",
     "cy:run": "cypress run --headless",
-    "lint": "prettier --check '**/*.{html,js,ts,svelte,md}'",
-    "format": "prettier --write '**/*.{html,js,ts,svelte,md}'",
+    "lint": "prettier --check '**/*.{html,js,ts,svelte}'",
+    "format": "prettier --write '**/*.{html,js,ts,svelte}'",
     "prepublishOnly": "yarn clean && yarn build"
   },
   "husky": {
@@ -52,7 +52,7 @@
     }
   },
   "lint-staged": {
-    "*.{html,js,ts,svelte,md}": "prettier --write"
+    "*.{html,js,ts,svelte}": "prettier --write"
   },
   "peerDependencies": {
     "svelte": "^3.20.0"
