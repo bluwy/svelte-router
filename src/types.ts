@@ -17,7 +17,7 @@ export interface RouteRecord {
   redirect?: Thunk<Promisable<string | LocationInput | undefined>>
   /**
    * Array of children routes. If defined, this route component requires a
-   * <slot /> component to render the child route.
+   * `<slot />` component to render the children routes.
    */
   children?: RouteRecord[]
 }

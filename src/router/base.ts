@@ -50,20 +50,7 @@ export abstract class Router {
    */
   navigate(to: number): void
   /**
-   * Navigate using a string or an object.
-   *
-   * In hash mode, `path` will take precedence over `hash`.
-   * e.g. `/foo#/bar` will navigate to `/foo`
-   *
-   * @example
-   * navigate('/foo/bar')
-   * navigate('/foo/bar?key=value')
-   * navigate('?key=value')
-   * navigate('#hey')
-   * navigate('#/foo/bar')
-   * navigate({ path: '/foo/bar', search: { key: 'value' } })
-   * navigate({ path: '/foo/bar', hash: '#hey' })
-   * navigate({ search: '?key=value' })
+   * Navigate to a route using a path string or a location descriptor object
    */
   navigate(to: string | LocationInput, replace?: boolean): void
   navigate(to: number | string | LocationInput, replace = false) {
@@ -85,6 +72,7 @@ export abstract class Router {
     }
   }
 
+  /** Returns a readable store that contains the given link's information */
   createLink(to: string | LocationInput): Readable<LinkState> {
     const input = typeof to === 'string' ? parseLocationInput(to) : to
 

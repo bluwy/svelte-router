@@ -16,7 +16,7 @@ export function parseLocationInput(to: string): LocationInput {
   }
 }
 
-/** Replace named param in path, e.g. `/foo/:id` => `/foo/123` */
+/** Replace dynamic segments in path, e.g. `/user/:id` => `/user/foo` */
 export function replacePathParams(
   path: string,
   params: Record<string, string>
