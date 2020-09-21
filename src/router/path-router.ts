@@ -3,11 +3,11 @@ import { Router } from './base'
 import { LocationInput } from '../types'
 import { formatPath, getBasePath, joinPaths, replacePathParams } from '../util'
 
-export class PathRouter extends Router {
-  private readonly basePath = getBasePath()
+const basePath = /*#__PURE__*/ getBasePath()
 
+export class PathRouter extends Router {
   getCurrentPath() {
-    return formatPath(window.location.pathname.replace(this.basePath, ''))
+    return formatPath(window.location.pathname.replace(basePath, ''))
   }
 
   getCurrentLocationInput(): LocationInput {
@@ -26,7 +26,7 @@ export class PathRouter extends Router {
     const url = new URL(window.location.href)
 
     if (to.path) {
-      url.pathname = joinPaths(this.basePath, to.path)
+      url.pathname = joinPaths(basePath, to.path)
     }
 
     url.search = to.search
@@ -43,7 +43,7 @@ export class PathRouter extends Router {
     const search = to.search ?? ''
     const hash = to.hash ?? ''
 
-    return joinPaths(this.basePath, path) + search + hash
+    return joinPaths(basePath, path) + search + hash
   }
 
   replaceParams(to: LocationInput, params?: Record<string, string>) {
