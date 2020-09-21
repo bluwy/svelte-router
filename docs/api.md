@@ -26,7 +26,7 @@ Renders the routes. No additional props.
 
 - Renders an anchor tag
 - Adds `aria-current="page"` when link exactly matches
-- Display correct `href` with resolved dynamic segments, base path and hash prepends, e.g. `/user/:id` => `#/user/foo`
+- Display correct `href` with resolved dynamic segments, base path, and hash prepends, e.g. `/user/:id` => `#/user/foo`
 - Adds active class names based on `to` and current route path:
   - `link-active` when link partially matches, e.g. `/foo` matches `/foo/bar`
   - `link-exact-active` when link exactly matches, e.g. `/foo` matches `/foo`
@@ -81,8 +81,8 @@ A readable store that contains the current route information.
 Returns a readable store that contains the given link's information.
 
 <!-- prettier-ignore -->
-| Property      | Type    | Example        | Description                                                          |
-|---------------|---------|----------------|----------------------------------------------------------------------|
-| href          | string  | `'#/user/foo'` | The path with resolved dynamic segments, base path and hash prepends |
-| isActive      | boolean | `false`        | Whether the link is partially matching the current path              |
-| isExactActive | boolean | `false`        | Whether the link is exactly matching the current path                |
+| Property      | Type    | Example        | Description                                                           |
+|---------------|---------|----------------|-----------------------------------------------------------------------|
+| href          | string  | `'#/user/foo'` | The path with resolved dynamic segments, base path, and hash prepends |
+| isActive      | boolean | `false`        | Whether the link is partially matching the current path               |
+| isExactActive | boolean | `false`        | Whether the link is exactly matching the current path                 |

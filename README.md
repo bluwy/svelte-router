@@ -82,7 +82,7 @@ Ready to learn more? The documentation is split into two parts:
 ## Examples
 
 - [Basic](./examples/basic): Basic router usage
-- [Lazy loading]('./examples/lazy-loading): Lazy loading setup example
+- [Lazy loading](./examples/lazy-loading): Lazy loading setup example
 
 ## Contributing
 
