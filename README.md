@@ -81,12 +81,12 @@ Ready to learn more? The documentation is split into two parts:
 
 ## Examples
 
-- [Basic](./examples/basic): Basic rotuer usage
+- [Basic](./examples/basic): Basic router usage
 - [Lazy loading]('./examples/lazy-loading): Lazy loading setup example
 
 ## Contributing
 
-All contributions are welcomed. For any major changes, please open an issue first :)
+All contributions are welcomed. Check out [CONTRIBUTING.md](./CONTRIBUTING.md) for more details.
 
 ## License
 
