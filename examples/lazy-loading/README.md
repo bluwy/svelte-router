@@ -7,7 +7,7 @@ An example with lazy loading components. There are many ways to support dynamic 
 Copy example project with [degit](https://github.com/Rich-Harris/degit):
 
 ```bash
-$ npx degit bluwy/svelte-router/examples/basic svelte-app
+$ npx degit bluwy/svelte-router/examples/lazy-loading svelte-app
 ```
 
 Install dependencies:
