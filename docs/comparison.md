@@ -2,9 +2,11 @@
 
 ## Key Difference
 
-One main feature that most routers don't have is a global route store, that is information about the current `path`, `search`, `hash`, and `params`. Most routers pass this data via props or via [context](https://svelte.dev/tutorial/context-api) which only works in components.
+One main feature that most routers don't have is a global route store, that is information about the current `path`, `search`, `hash`, and `params`. Most routers pass this data via props or via [context](https://svelte.dev/tutorial/context-api) which cannot be used outside of components.
 
-Another unique feature `svelte-router` has to offer is [`createLink()`](./guide.md#link-information), a nice low-level utility to retrieve link information without actually creating one.
+Besides that, `svelte-router` also has a unique [dynamic syntax](./guide.md#dynamic-syntax), which makes it clear where a link navigates to. For example, `navigate('/user/:id/profile')` instead of `navigate('../../profile')`.
+
+For a more fine-grained control, `svelte-router` exposes [`createLink()`](./guide.md#link-information), which is a nice low-level utility to retrieve link information without actually creating one.
 
 ## General Difference
 

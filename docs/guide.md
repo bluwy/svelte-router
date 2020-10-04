@@ -2,7 +2,7 @@
 
 Here contains all you need to know about `svelte-router`!
 
-The guide below assumes you've setup `svelte-router`. If you haven't done so, you can check out the [quick start](../README.md#quick-start).
+If you haven't setup `svelte-router`, check out the [quick start](../README.md#quick-start)!
 
 ## Table of Contents
 
@@ -24,14 +24,15 @@ The guide below assumes you've setup `svelte-router`. If you haven't done so, yo
 
 ## Router Modes
 
-`svelte-router` supports both `hash` and `path` mode routing. `hash` mode works by manipulating that [URL hash](https://developer.mozilla.org/en-US/docs/Web/API/URL/hash), while `path` mode works by manipulating the URL path. For example:
+`svelte-router` supports both `hash` and `path` mode routing. `hash` mode works by manipulating the URL hash, while `path` mode works by manipulating the URL path:
 
-- Hash: https://example.com/#/user/foo
-- Path: https://example.com/user/foo
+<!-- prettier-ignore -->
+| Mode | Initialize API     | Example URL                    |
+|------|--------------------|--------------------------------|
+| hash | `initHashRouter()` | https://example.com/#/user/foo |
+| path | `initPathRouter()` | https://example.com/user/foo   |
 
-In most cases, `hash` mode should work in all apps without additional setup. Use `initHashRouter()` to initialize a `hash` mode router.
-
-The `path` mode however requires additional configuration on the server-side to serve a single HTML file for all URL paths. For example, when a user visits https://example.com/user/foo, the server should return an HTML file that may be located in http://example.com/index.html. Use `initPathRouter()` to initialize a `path` mode router.
+Do note that `path` mode requires additional configuration on the server-side to serve a single HTML file for all URL paths. For example, the server should serve http://example.com/index.html when the user visits https://example.com/user/foo.
 
 ## Dynamic Route Matching
 
@@ -187,6 +188,8 @@ navigate(-1)
   function visitPosts() {
     // Navigates to `/user/foo/posts`
     navigate('/user/:id/posts')
+
+    // Navigates to `/user/foo/posts`
     navigate({ path: '/user/:id/posts' })
   }
 </script>
@@ -198,11 +201,10 @@ navigate(-1)
 <Link to={{ path: '/user/:id/posts' }}>...</Link>
 ```
 
-Do note that the dynamic syntax does not work in all portions of the path.
+Do note that:
 
-For `hash` mode routers, the syntax will only work in the `path` and `hash` portion of the path.
-
-For `path` mode routers, the syntax will only work in the `path` portion of the path.
+- In `hash` mode, the syntax will not work in the `search` portion of the location
+- In `path` mode, the syntax will not work in both the `search` and `hash` portion of the location
 
 ## Route Information
 
@@ -250,7 +252,7 @@ Internally, the `<Link />` component also uses this [under-the-hood](https://git
 
 ## Redirects and Navigation Guards
 
-When navigating to certain routes that are invalid or protected, it may need to be redirected away depending on the condition.
+When navigating to certain invalid or protected routes, a redirect may be required.
 
 In `svelte-router`, the route `redirect` property can be used to acheive that:
 
@@ -267,12 +269,14 @@ Besides that, `redirect` also accepts a function or asynchronous function that m
 [
   {
     path: '/secret',
-    redirect: () => {
+    redirect: async () => {
       // Call external function to check if user is authenticated
-      if (isAuthenticated()) {
-        return undefined // If authenticated, don't redirect away
+      if (await isAuthenticated()) {
+        // User is authenticated, stay on route
+        return undefined
       } else {
-        return '/' // If not authenticated, redirect to `/`
+        // User is not authenticated, redirect to `/`
+        return '/'
       }
     }
   }
