@@ -1,6 +1,14 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+      - 'examples/**'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - 'examples/**'
 
 jobs:
   test:
@@ -23,13 +31,24 @@ jobs:
 
       - name: End-to-end test
         uses: cypress-io/github-action@v2
-        if: github.event_name == 'push'
         with:
           headless: true
-          record: true
           start: yarn cy:setup
           wait-on: 'http://localhost:10003'
           install: false
         env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Cypress screenshots
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+
+      - name: Upload Cypress videos
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-videos
+          path: cypress/videos
