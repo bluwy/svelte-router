@@ -25,13 +25,13 @@ An easy-to-use SPA router for Svelte.
 
 ## Quick Start
 
-1. Install [`@bjornlu/svelte-router`](https://www.npmjs.com/package/@bjornlu/svelte-router):
+Install [`@bjornlu/svelte-router`](https://www.npmjs.com/package/@bjornlu/svelte-router):
 
 ```bash
 $ npm install @bjornlu/svelte-router
 ```
 
-2. Define routes:
+Define routes:
 
 ```js
 // main.js
@@ -52,7 +52,7 @@ const app = new App({
 export default app
 ```
 
-3. Render routes and links:
+Render routes and links:
 
 ```svelte
 <!-- App.svelte -->
@@ -69,7 +69,7 @@ export default app
 </main>
 ```
 
-4. Done!
+Done!
 
 ## Documentation
 
