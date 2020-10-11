@@ -1,6 +1,12 @@
 # Changelog
 
-## 0.3.1 - 2020-10-22
+## 0.3.2 - 2020-10-11
+
+### Fixed
+
+- Keep `navigate` and `createLink` reference when initializing router
+
+## 0.3.1 - 2020-09-22
 
 ### Added
 
