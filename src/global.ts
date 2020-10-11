@@ -4,15 +4,7 @@ import { HashRouter } from './router/hash-router'
 import { PathRouter } from './router/path-router'
 import { RouteRecord } from './types'
 
-// Will be assigned when `initRouter`
-export let navigate: Router['navigate'] = () => {
-  throw new Error('Router must be initialized before calling navigate')
-}
-
-// Will be assigned when `initRouter`
-export let createLink: Router['createLink'] = () => {
-  throw new Error('Router must be initialized before calling createLink')
-}
+let globalRouter: Router | undefined
 
 const writableRoute = writable<Route>({
   path: '',
@@ -24,28 +16,37 @@ const writableRoute = writable<Route>({
 
 export const route: Readable<Route> = { subscribe: writableRoute.subscribe }
 
-let inited = false
-
-function initRouter(router: Router) {
-  navigate = router.navigate.bind(router)
-  createLink = router.createLink.bind(router)
-  router.currentRoute.subscribe((v) => writableRoute.set(v))
+export const navigate: Router['navigate'] = function () {
+  if (globalRouter != null) {
+    // @ts-expect-error
+    return globalRouter.navigate(...arguments)
+  } else {
+    throw new Error('Router must be initialized before calling navigate')
+  }
 }
 
-function checkInit() {
-  if (inited) {
-    throw new Error('Router already initialized. Cannot re-initialize router.')
+export const createLink: Router['createLink'] = function () {
+  if (globalRouter != null) {
+    // @ts-expect-error
+    return globalRouter.createLink(...arguments)
   } else {
-    inited = true
+    throw new Error('Router must be initialized before calling createLink')
   }
 }
 
 export function initHashRouter(routes: RouteRecord[]) {
-  checkInit()
   initRouter(new HashRouter(routes))
 }
 
 export function initPathRouter(routes: RouteRecord[]) {
-  checkInit()
   initRouter(new PathRouter(routes))
+}
+
+function initRouter(router: Router) {
+  if (globalRouter == null) {
+    globalRouter = router
+    globalRouter.currentRoute.subscribe((v) => writableRoute.set(v))
+  } else {
+    throw new Error('Router already initialized. Cannot re-initialize router.')
+  }
 }
