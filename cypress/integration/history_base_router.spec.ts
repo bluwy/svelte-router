@@ -55,4 +55,12 @@ describe('history base router', { baseUrl: 'http://localhost:10003' }, () => {
     cy.get('a').contains('Dynamic').click()
     cy.contains('Dynamic import').should('exist')
   })
+
+  it('should handle nested route transitions', () => {
+    cy.visit('/test')
+    cy.get('a').contains('Transition').click()
+    cy.contains('Transition test').should('exist')
+    cy.get('a').contains('Home').click()
+    cy.contains('Transition test').should('not.exist')
+  })
 })

@@ -18,13 +18,14 @@ const createConfig = (routerMode, publicPath) => ({
   },
   plugins: [
     svelte({
+      dev: true,
       preprocess: svelteConfig.preprocess,
       css: (v) => v.write('bundle.css')
     }),
     resolve(),
     replace({
       __ROUTER_MODE__: JSON.stringify(routerMode),
-      'process.env.NODE_ENV': JSON.stringify('production')
+      'process.env.NODE_ENV': JSON.stringify('development')
     }),
     typescript({
       tsconfig: p('tsconfig.json')

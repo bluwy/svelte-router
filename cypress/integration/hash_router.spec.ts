@@ -51,8 +51,16 @@ describe('hash router', { baseUrl: 'http://localhost:10001' }, () => {
   })
 
   it('should dynamically import a route', () => {
-    cy.visit('/')
+    cy.visit('#/')
     cy.get('a').contains('Dynamic').click()
     cy.contains('Dynamic import').should('exist')
+  })
+
+  it('should handle nested route transitions', () => {
+    cy.visit('#/')
+    cy.get('a').contains('Transition').click()
+    cy.contains('Transition test').should('exist')
+    cy.get('a').contains('Home').click()
+    cy.contains('Transition test').should('not.exist')
   })
 })
