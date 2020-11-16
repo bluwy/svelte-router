@@ -35,13 +35,11 @@
 
 {#if canRender}
   {#if component != null}
-    {#if hasChildren}
-      <svelte:component this={component}>
+    <svelte:component this={component}>
+      {#if hasChildren}
         <svelte:self depth={depth + 1} />
-      </svelte:component>
-    {:else}
-      <svelte:component this={component} />
-    {/if}
+      {/if}
+    </svelte:component>
   {:else if hasChildren}
     <svelte:self depth={depth + 1} />
   {/if}
