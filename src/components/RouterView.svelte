@@ -31,8 +31,6 @@
   }
 </script>
 
-<svelte:options immutable />
-
 {#if canRender}
   {#if component != null}
     <svelte:component this={component}>
