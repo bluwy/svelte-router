@@ -8,7 +8,7 @@
     "start": "sirv public -s"
   },
   "devDependencies": {
-    "@bjornlu/svelte-router": "^0.3.2",
+    "@bjornlu/svelte-router": "^0.4.0",
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-node-resolve": "^8.0.0",
     "rollup": "^2.3.4",
