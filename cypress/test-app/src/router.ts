@@ -1,5 +1,6 @@
 import { initHashRouter, initPathRouter } from './package'
 import Home from './views/Home.svelte'
+import HomeTransition from './views/HomeTransition.svelte'
 import Profile from './views/Profile.svelte'
 import ProfileWelcome from './views/ProfileWelcome.svelte'
 import ProfileBio from './views/ProfileBio.svelte'
@@ -10,7 +11,13 @@ const initRouter = __ROUTER_MODE__ === 'hash' ? initHashRouter : initPathRouter
 initRouter([
   {
     path: '/',
-    component: Home
+    component: Home,
+    children: [
+      {
+        path: '/transition',
+        component: HomeTransition
+      }
+    ]
   },
   {
     path: '/profile/:id',
