@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1 - 2021-01-31
+
+### Fixed
+
+- Don't remount component when enter nested routes (again)
+
 ## 0.4.0 - 2021-01-30
 
 ### Fixed
