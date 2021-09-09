@@ -4,7 +4,7 @@
 
 ### Added
 
-- Use location API for hash navigation
+- Use location API for hash navigation ([#15](https://github.com/bluwy/svelte-router/pull/15))
 
 ## 0.4.1 - 2021-01-31
 
