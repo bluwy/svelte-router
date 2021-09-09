@@ -34,6 +34,14 @@ export abstract class Router {
     this.navigate(this.getCurrentLocationInput(), true)
   }
 
+  /**
+   * Navigates to the url but do not create a new entry in the history
+   */
+  protected abstract replace(url: string): void
+  /**
+   * Navigates to the url, leaving behind a trace in the history
+   */
+  protected abstract push(url: string): void
   protected abstract getCurrentPath(): string
   protected abstract getCurrentLocationInput(): LocationInput
   protected abstract getPath(to: LocationInput): string | undefined
@@ -66,9 +74,9 @@ export abstract class Router {
     const url = this.createUrl(this.replaceParams(to))
 
     if (replace) {
-      history.replaceState(url, '', url)
+      this.replace(url);
     } else {
-      history.pushState(url, '', url)
+      this.push(url);
     }
   }
 

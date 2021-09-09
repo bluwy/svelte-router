@@ -56,4 +56,12 @@ export class PathRouter extends Router {
 
     return newTo
   }
+
+  replace(url: string) {
+    history.replaceState(url, '', url)
+  }
+
+  push(url: string) {
+    history.pushState(url, '', url)
+  }
 }
