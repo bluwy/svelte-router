@@ -56,4 +56,12 @@ export class HashRouter extends Router {
 
     return newTo
   }
+
+  replace(url: string) {
+    location.replace(url);
+  }
+
+  push(url: string) {
+    location.assign(url);
+  }
 }
