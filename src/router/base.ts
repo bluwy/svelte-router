@@ -74,9 +74,9 @@ export abstract class Router {
     const url = this.createUrl(this.replaceParams(to))
 
     if (replace) {
-      this.replace(url);
+      this.replace(url)
     } else {
-      this.push(url);
+      this.push(url)
     }
   }
 

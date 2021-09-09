@@ -58,10 +58,10 @@ export class HashRouter extends Router {
   }
 
   replace(url: string) {
-    location.replace(url);
+    location.replace(url)
   }
 
   push(url: string) {
-    location.assign(url);
+    location.assign(url)
   }
 }
