@@ -10,6 +10,7 @@
     <Link to="/null">Null</Link>
     <Link to="/dynamic">Dynamic</Link>
     <Link to="/transition">Transition</Link>
+    <Link to="/" replace>Home replace</Link>
   </div>
   <div>
     <input id="profile-id" type="text" bind:value={profileId} />
