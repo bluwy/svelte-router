@@ -1,7 +1,7 @@
 {
   "name": "@bjornlu/svelte-router",
   "description": "An easy-to-use SPA router for Svelte",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "main": "dist/svelte-router.umd.js",
   "module": "dist/index.js",
   "svelte": "dist/index.js",

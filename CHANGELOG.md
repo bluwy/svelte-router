@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0 - 2021-09-10
+
+### Added
+
+- Use location API for hash navigation
+
 ## 0.4.1 - 2021-01-31
 
 ### Fixed
