@@ -10,5 +10,5 @@ const name = pkg.name
 export default {
   input: pkg.module,
   output: { file: pkg.main, format: 'umd', name },
-  plugins: [svelte(), resolve()]
+  plugins: [svelte(), resolve({ preventAssignment: true })]
 }

@@ -3,6 +3,5 @@
   "singleQuote": true,
   "trailingComma": "none",
   "proseWrap": "never",
-  "svelteBracketNewLine": true,
-  "svelteSortOrder": "scripts-markup-styles"
+  "plugins": ["./node_modules/prettier-plugin-svelte"]
 }

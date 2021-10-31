@@ -24,8 +24,11 @@ const createConfig = (routerMode, publicPath) => ({
     }),
     resolve(),
     replace({
-      __ROUTER_MODE__: JSON.stringify(routerMode),
-      'process.env.NODE_ENV': JSON.stringify('development')
+      preventAssignment: true,
+      values: {
+        __ROUTER_MODE__: JSON.stringify(routerMode),
+        'process.env.NODE_ENV': JSON.stringify('development')
+      }
     }),
     typescript({
       tsconfig: p('tsconfig.json')

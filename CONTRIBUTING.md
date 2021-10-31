@@ -19,8 +19,8 @@ Below is the general development workflow:
 ### Local Development
 
 1. Clone the repo
-2. Run `yarn install` to install dependencies
-3. Run `yarn cy:setup` to manually test the router
+2. Run `pnpm install` to install dependencies
+3. Run `pnpm cy:setup` to manually test the router
 
 This will start up 3 servers at:
 
@@ -40,8 +40,8 @@ Code will be auto-formatted per git commits using [husky](https://github.com/typ
 
 The library performs unit testing (with [Jest](https://jestjs.io)) and e2e testing (with [Cypress](https://cypress.io)).
 
-- Run `yarn test:unit` for unit tests
-- Run `yarn test:e2e` for e2e tests
+- Run `pnpm test:unit` for unit tests
+- Run `pnpm test:e2e` for e2e tests
 
 When pushing or sending a pull request to this repo, a GitHub Actions workflow will run both unit and e2e tests.
 

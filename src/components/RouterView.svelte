@@ -1,3 +1,5 @@
+<svelte:options immutable />
+
 <script lang="ts">
   import { tick } from 'svelte'
   import { route, navigate } from '../global'
@@ -30,8 +32,6 @@
     })
   }
 </script>
-
-<svelte:options immutable />
 
 {#if canRender}
   {#if component != null}

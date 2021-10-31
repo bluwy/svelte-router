@@ -43,9 +43,7 @@ import App from './App.svelte'
 import Home from './Home.svelte'
 
 // Use `initHashRouter` for hash mode
-initPathRouter([
-  { path: '/', component: Home }
-])
+initPathRouter([{ path: '/', component: Home }])
 
 const app = new App({
   target: document.body

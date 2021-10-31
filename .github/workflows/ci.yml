@@ -18,22 +18,36 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install dependencies
-        uses: cypress-io/github-action@v2
+      - name: Install pnpm
+        run: npm i -g pnpm@6
+
+      - name: Setup node
+        uses: actions/setup-node@v2
         with:
-          runTests: false
+          node-version: 16
+          cache: 'pnpm'
+          cache-dependency-path: '**/pnpm-lock.yaml'
+
+      - name: Cache Cypress
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-cache-ubuntu-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Install dependencies
+        run: pnpm i
 
       - name: Lint
-        run: yarn lint
+        run: pnpm lint
 
       - name: Unit test
-        run: yarn test:unit
+        run: pnpm test:unit
 
       - name: End-to-end test
         uses: cypress-io/github-action@v2
         with:
           headless: true
-          start: yarn cy:setup
+          start: pnpm cy:setup
           wait-on: 'http://localhost:10003'
           install: false
         env:
