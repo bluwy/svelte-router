@@ -1,5 +1,7 @@
 # Comparison
 
+_Last updated: 22 September 2020_
+
 ## Key Difference
 
 One main feature that most routers don't have is a global route store, that is information about the current `path`, `search`, `hash`, and `params`. Most routers pass this data via props or via [context](https://svelte.dev/tutorial/context-api) which cannot be used outside of components.

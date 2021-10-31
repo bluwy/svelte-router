@@ -5,6 +5,8 @@
 [![npm downloads](https://img.shields.io/npm/dm/@bjornlu/svelte-router)](https://www.npmjs.com/package/@bjornlu/svelte-router)
 [![ci](https://github.com/bluwy/svelte-router/workflows/CI/badge.svg?event=push)](https://github.com/bluwy/svelte-router/actions)
 
+> Before you start, I'd highly recommend checking out [SvelteKit](https://github.com/sveltejs/kit) first. It has a flexible filesystem-based router officially supported by the Svelte team.
+
 An easy-to-use SPA router for Svelte.
 
 [**Comparison with other routers**](./docs/comparison.md)
@@ -20,7 +22,7 @@ An easy-to-use SPA router for Svelte.
 
 ## Not Supported
 
-- Server-side rendering (SSR) - Use [Sapper](https://github.com/sveltejs/sapper) instead
+- Server-side rendering (SSR) - Use [SvelteKit](https://github.com/sveltejs/kit) instead
 - Relative navigations - Use absolute path and [dynamic syntax](./docs/guide.md#dynamic-syntax) instead
 
 ## Quick Start
