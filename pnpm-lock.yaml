@@ -2020,7 +2020,7 @@ packages:
       lodash: 4.17.21
       log-symbols: 4.1.0
       minimist: 1.2.5
-      moment: 2.29.1
+      moment: 2.29.4
       ospath: 1.2.2
       pretty-bytes: 5.6.0
       ramda: 0.26.1
@@ -4368,8 +4368,8 @@ packages:
     hasBin: true
     dev: true
 
-  /moment@2.29.1:
-    resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
+  /moment@2.29.4:
+    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
     dev: true
 
   /mri@1.2.0:
